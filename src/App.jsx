@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 /* ------------------------------------------------------------------ *
  * Content
@@ -15,18 +15,13 @@ const PRODUCTS = [
     tone: 'light',
     c1: '#F5A524',
     c2: '#FF6A3D',
+    deep: '#C2410C', // solid accent for light grounds — passes contrast where the gradient couldn't
     glow: 'rgba(255, 122, 61, 0.28)',
     screenBg: '#faf7f1',
     eyebrow: 'Booking for barbershops, salons & spas',
     headline: ['Your shop’s booking page.', 'Your link, your customers.'],
-    sub: 'Any shop sets up in ten minutes on the phone it already has, shares one link on WhatsApp, and the book fills itself. Customers see your shop — nobody else’s.',
+    sub: 'Set up in ten minutes, share one link on WhatsApp, and the book fills itself.',
     shots: { desktop: '/shots/zaamu-desktop.jpg', mobile: '/shots/zaamu-mobile.jpg' },
-    tiles: [
-      { big: '10 min', title: 'Set up on the phone you have', body: 'No laptop, no onboarding call. Add services, staff and hours, and your booking page is live.' },
-      { big: 'One link', title: 'Your link is the only door', body: 'zaamu.com/book/your-shop — share it on WhatsApp. No app for customers to install, ever.' },
-      { big: 'One book', title: 'Walk-ins and online together', body: 'Receptionist roles, staff schedules, reschedules and no-show protection in a single calendar.' },
-      { big: 'Self-serve', title: 'Multi-tenant from day one', body: 'Every shop onboards itself — priced in KES, built for how Kenyan shops actually run.' },
-    ],
   },
   {
     id: 'pesascope',
@@ -36,18 +31,13 @@ const PRODUCTS = [
     tone: 'dark',
     c1: '#34D399',
     c2: '#0EA5A5',
+    deep: '#0E9F6E',
     glow: 'rgba(52, 211, 153, 0.26)',
     screenBg: '#f7f9f8',
     eyebrow: 'Personal finance · privacy-first',
     headline: ['Your M‑Pesa statement,', 'decoded.'],
-    sub: 'Drop in Safaricom’s password-protected statement and see who you pay most, where the money goes, what the fees really cost — every figure reconciled to the cent.',
+    sub: 'Safaricom’s locked PDF becomes a spending dashboard — reconciled to the cent, entirely on your device.',
     shots: { desktop: '/shots/pesascope-desktop.jpg', mobile: '/shots/pesascope-mobile.jpg' },
-    tiles: [
-      { big: '0 uploads', title: 'Nothing leaves your browser', body: 'The PDF is unlocked and parsed on your device with pdf.js. Close the tab and it’s gone.' },
-      { big: 'To the cent', title: 'Reconciled against the statement', body: 'Totals match the statement’s own SUMMARY page. If a shilling is off, the parser says so.' },
-      { big: 'Ranked', title: 'People, merchants, PayBills', body: 'Who you send to, who sends to you, and the fee attached to every transaction.' },
-      { big: 'Search', title: 'A name, a till, a receipt', body: 'Type anything and get that counterparty’s full history — then export what you’re looking at as CSV.' },
-    ],
   },
   {
     id: 'sampuli',
@@ -57,18 +47,13 @@ const PRODUCTS = [
     tone: 'light',
     c1: '#6366F1',
     c2: '#D946EF',
+    deep: '#4F46E5',
     glow: 'rgba(99, 102, 241, 0.26)',
     screenBg: '#f3f5f3',
     eyebrow: 'Test data for software teams',
     headline: ['Synthetic data that', 'passes every check.'],
-    sub: 'Realistic, format-valid sample data for QA — phone prefixes, national IDs, KRA PINs and Luhn-checked test cards that follow real formats and belong to no real person.',
+    sub: 'Format-valid test data for QA — from KRA PINs to Luhn-checked cards — that belongs to no real person.',
     shots: { desktop: '/shots/sampuli-desktop.jpg', mobile: '/shots/sampuli-mobile.jpg' },
-    tiles: [
-      { big: '27', title: 'Country packs, Kenya first', body: 'Africa’s fifteen largest economies plus Rwanda, and eleven major-currency markets from the US to Japan.' },
-      { big: 'Valid', title: 'Real formats, no real people', body: 'Every value is generated in the browser and format-checked. No personal data is used or stored.' },
-      { big: '1 click', title: 'One value, one click', body: 'A quick strip for the field you need right now — phone, ID, SWIFT/BIC, PayBill — re-rolled on tap.' },
-      { big: 'CSV · SQL', title: 'Export anywhere', body: 'CSV, JSON, NDJSON and SQL, plus linked datasets with customer → transaction foreign keys.' },
-    ],
   },
 ]
 
@@ -80,7 +65,7 @@ const PRINCIPLES = [
 ]
 
 /* ------------------------------------------------------------------ *
- * Reveal-on-scroll
+ * Hooks
  * ------------------------------------------------------------------ */
 
 function useReveal() {
@@ -107,8 +92,43 @@ function useReveal() {
   }, [])
 }
 
+/** Scroll-scrubbed step index over a tall container: deterministic and reversible. */
+function useScrub(steps) {
+  const ref = useRef(null)
+  const [idx, setIdx] = useState(0)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setIdx(steps - 1)
+      return
+    }
+    let raf = 0
+    const onScroll = () => {
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(() => {
+        const rect = el.getBoundingClientRect()
+        const total = rect.height - window.innerHeight
+        if (total <= 0) return
+        const p = Math.min(1, Math.max(0, -rect.top / total))
+        el.style.setProperty('--p', p.toFixed(4))
+        setIdx(Math.min(steps - 1, Math.floor(p * steps)))
+      })
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
+  }, [steps])
+  return [ref, idx]
+}
+
 /* ------------------------------------------------------------------ *
- * Pieces
+ * Shared pieces
  * ------------------------------------------------------------------ */
 
 function Logomark({ size = 28 }) {
@@ -175,31 +195,332 @@ function Laptop({ src, alt }) {
   )
 }
 
-function Phone({ src, alt }) {
+function Phone({ src, alt, children, className = '' }) {
   return (
-    <div className="phone">
+    <div className={`phone ${className}`}>
       <div className="phone__island" aria-hidden="true" />
-      <img src={src} alt={alt} loading="lazy" decoding="async" />
+      {src ? <img src={src} alt={alt} loading="lazy" decoding="async" /> : children}
     </div>
   )
 }
 
-function Chapter({ p, index }) {
-  const style = { '--c1': p.c1, '--c2': p.c2, '--glow': p.glow, '--screen-bg': p.screenBg }
+/* ------------------------------------------------------------------ *
+ * Product stories — one shape per product, scrubbed by scroll
+ * ------------------------------------------------------------------ */
+
+const ZAAMU_CAPTIONS = [
+  { title: 'Pick a service.', body: 'Prices in KES, durations honest. The menu is the shop’s own.' },
+  { title: 'Pick your barber, pick a window.', body: 'Only genuinely free slots show — the calendar can’t double-book.' },
+  { title: 'Confirmed.', body: 'The booking lands in the shop’s book and the reminder goes out on WhatsApp.' },
+]
+
+function ZaamuStory() {
+  const [ref, idx] = useScrub(3)
+  return (
+    <div className="story" ref={ref} style={{ '--steps': 3 }}>
+      <div className="story__sticky">
+        <div className="story__grid">
+          <div className="story__captions">
+            {ZAAMU_CAPTIONS.map((c, i) => (
+              <div key={c.title} className={`story__caption ${i === idx ? 'is-on' : ''}`} aria-hidden={i !== idx}>
+                <p className="story__step">{i + 1} / 3</p>
+                <h3>{c.title}</h3>
+                <p className="story__body">{c.body}</p>
+              </div>
+            ))}
+          </div>
+          <Phone className="phone--story">
+            <div className="zs" data-step={idx}>
+              {/* screen 1 — services */}
+              <div className="zs__screen zs__services">
+                <p className="zs__head">Yankee Clippers · Gigiri</p>
+                <p className="zs__label">Choose a service</p>
+                <div className="zs__row">Haircut <span>KES 500</span></div>
+                <div className="zs__row">Beard trim <span>KES 300</span></div>
+                <div className="zs__row zs__row--sel">Haircut &amp; Beard · 45 min <span>KES 800</span></div>
+              </div>
+              {/* screen 2 — barber + slot */}
+              <div className="zs__screen zs__slots">
+                <p className="zs__label">With</p>
+                <div className="zs__chips">
+                  <span className="zs__chip zs__chip--sel">James</span>
+                  <span className="zs__chip">Amina</span>
+                  <span className="zs__chip">Otis</span>
+                </div>
+                <p className="zs__label">Saturday</p>
+                <div className="zs__chips">
+                  <span className="zs__chip">09:00</span>
+                  <span className="zs__chip zs__chip--sel">10:30</span>
+                  <span className="zs__chip">12:15</span>
+                  <span className="zs__chip">16:00</span>
+                </div>
+              </div>
+              {/* screen 3 — confirmed */}
+              <div className="zs__screen zs__done">
+                <div className="zs__check" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="26" height="26"><path d="M4 12.5 9.5 18 20 6.5" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                </div>
+                <p className="zs__big">Booked with James</p>
+                <p className="zs__meta">Sat · 10:30 · KES 800</p>
+                <p className="zs__wa">Reminder sent on WhatsApp</p>
+              </div>
+            </div>
+          </Phone>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const PESA_CAPTIONS = [
+  { title: 'Drop in the locked PDF.', body: 'The “M‑PESA Full Statement” Safaricom emails you — password and all.' },
+  { title: 'Unlocked on your device.', body: 'The PIN opens it right in the browser. No account, no server, no copy anywhere.' },
+  { title: 'Your money, mapped.', body: 'People, merchants, fees and habits — every figure reconciled against the statement’s own summary.' },
+]
+
+function PesaStory() {
+  const [ref, idx] = useScrub(3)
+  return (
+    <div className="story" ref={ref} style={{ '--steps': 3 }}>
+      <div className="story__sticky">
+        <div className="story__grid story__grid--flip">
+          <div className="ps" data-step={idx}>
+            <div className="ps__screen ps__file">
+              <div className="ps__doc" aria-hidden="true" />
+              <p className="ps__name">MPESA_Statement.pdf</p>
+              <p className="ps__lock">🔒 password-protected</p>
+            </div>
+            <div className="ps__screen ps__pin">
+              <div className="ps__dots" aria-hidden="true"><span /><span /><span /><span /></div>
+              <p className="ps__lock">Unlocked on this device</p>
+            </div>
+            <div className="ps__screen ps__dash">
+              <p className="ps__title">Where it went</p>
+              <div className="ps__bar"><i style={{ width: '86%' }} /><b>Send money</b></div>
+              <div className="ps__bar"><i style={{ width: '61%' }} /><b>PayBill</b></div>
+              <div className="ps__bar"><i style={{ width: '43%' }} /><b>Buy goods</b></div>
+              <div className="ps__bar"><i style={{ width: '20%' }} /><b>Fuliza</b></div>
+              <p className="ps__foot">✓ Reconciled to the cent · 0 bytes uploaded</p>
+            </div>
+          </div>
+          <div className="story__captions">
+            {PESA_CAPTIONS.map((c, i) => (
+              <div key={c.title} className={`story__caption ${i === idx ? 'is-on' : ''}`} aria-hidden={i !== idx}>
+                <p className="story__step">{i + 1} / 3</p>
+                <h3>{c.title}</h3>
+                <p className="story__body">{c.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* Sampuli: the product generates values, so the page does too — live. */
+const rnd = (n) => Math.floor(Math.random() * n)
+const digits = (n) => Array.from({ length: n }, () => rnd(10)).join('')
+function genPhone() { return `07${10 + rnd(90)} ${digits(3)} ${digits(3)}` }
+function genId() { return `${1 + rnd(3)}${digits(7)}` }
+function genPin() { return `A${digits(9)}${'ABCDEFGHJKLMNPQRSTUVWXYZ'[rnd(24)]}` }
+function genCard() {
+  // Luhn-valid test PAN on a 404889 test BIN
+  const base = `404889${digits(9)}`
+  let sum = 0
+  for (let i = 0; i < 15; i++) {
+    let d = +base[14 - i]
+    if (i % 2 === 0) { d *= 2; if (d > 9) d -= 9 }
+    sum += d
+  }
+  const pan = base + ((10 - (sum % 10)) % 10)
+  return pan.replace(/(\d{4})(?=\d)/g, '$1 ')
+}
+
+const GENS = [
+  { label: 'Phone · Safaricom', fn: genPhone },
+  { label: 'National ID', fn: genId },
+  { label: 'KRA PIN', fn: genPin },
+  { label: 'Test card · Luhn ✓', fn: genCard },
+]
+
+function SampuliLive() {
+  const [values, setValues] = useState(() => GENS.map((g) => g.fn()))
+  const [tick, setTick] = useState(0)
+  const ref = useRef(null)
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const el = ref.current
+    if (!el) return
+    let timer = null
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && !timer) {
+        timer = setInterval(() => {
+          setValues(GENS.map((g) => g.fn()))
+          setTick((t) => t + 1)
+        }, 1400)
+      } else if (!e.isIntersecting && timer) {
+        clearInterval(timer)
+        timer = null
+      }
+    }, { threshold: 0.4 })
+    io.observe(el)
+    return () => { io.disconnect(); if (timer) clearInterval(timer) }
+  }, [])
+  return (
+    <div className="live" ref={ref} data-reveal>
+      <div className="live__panel">
+        {GENS.map((g, i) => (
+          <div key={g.label} className="live__field">
+            <span className="live__label">{g.label}</span>
+            <span key={tick} className="live__value">{values[i]}</span>
+          </div>
+        ))}
+      </div>
+      <p className="live__note">Every value above was invented on this page, just now. Format-valid. Belongs to no one.</p>
+    </div>
+  )
+}
+
+/* ------------------------------------------------------------------ *
+ * Tiles — a real thing in every tile: a measurement or working UI
+ * ------------------------------------------------------------------ */
+
+function ZaamuTiles() {
+  return (
+    <div className="bento">
+      <article className="tile" data-reveal>
+        <div className="demo">
+          <div className="demo__booking">
+            <div>
+              <p className="demo__svc">Haircut &amp; Beard Trim</p>
+              <p className="demo__meta">with James · 45 min</p>
+            </div>
+            <div className="demo__right">
+              <p className="demo__kes">KES 800</p>
+              <span className="demo__pill">● Confirmed</span>
+            </div>
+          </div>
+        </div>
+        <h3 className="tile__title">Walk-ins and online in one book</h3>
+        <p className="tile__body">Receptionist roles, staff schedules, reschedules and no-show protection in a single calendar.</p>
+      </article>
+      <article className="tile" data-reveal>
+        <div className="demo">
+          <div className="demo__wa">
+            <p>Karibu! Book your next visit here 👉 <b>zaamu.com/book/yankee-clippers</b></p>
+          </div>
+        </div>
+        <h3 className="tile__title">Your link is the only door</h3>
+        <p className="tile__body">Share it on WhatsApp or your status. No app for customers to install, ever.</p>
+      </article>
+      <article className="tile" data-reveal>
+        <p className="tile__big">10 min</p>
+        <h3 className="tile__title">Set up on the phone you have</h3>
+        <p className="tile__body">No laptop, no onboarding call. Add services, staff and hours, and your page is live.</p>
+      </article>
+      <article className="tile" data-reveal>
+        <p className="tile__big">Free</p>
+        <h3 className="tile__title">While we grow</h3>
+        <p className="tile__body">Self-serve and multi-tenant from day one, priced for how Kenyan shops actually run.</p>
+      </article>
+    </div>
+  )
+}
+
+function PesaTiles() {
+  return (
+    <div className="bento">
+      <article className="tile" data-reveal>
+        <p className="tile__big">0 bytes</p>
+        <h3 className="tile__title">Uploaded, ever</h3>
+        <p className="tile__body">The PDF is unlocked and parsed on your device with pdf.js. Close the tab and it’s gone.</p>
+      </article>
+      <article className="tile" data-reveal>
+        <div className="demo">
+          <div className="demo__recon">
+            <div><span>PAID IN</span><b>KES 245,180.00</b></div>
+            <div><span>PAID OUT</span><b>KES 244,982.15</b></div>
+            <p className="demo__ok">✓ Matches the statement’s own summary</p>
+          </div>
+        </div>
+        <h3 className="tile__title">Reconciled to the cent</h3>
+        <p className="tile__body">If a shilling doesn’t add up, the parser says so instead of guessing.</p>
+      </article>
+      <article className="tile" data-reveal>
+        <p className="tile__big">100 pages</p>
+        <h3 className="tile__title">Parsed in seconds</h3>
+        <p className="tile__body">A full 3,784-row statement becomes people, merchants, fees and habits before you’ve scrolled.</p>
+      </article>
+      <article className="tile" data-reveal>
+        <div className="demo">
+          <div className="demo__search">
+            <p className="demo__q">🔎 0712 345 678</p>
+            <p className="demo__r">Sent 14 times · KES 36,400 · fees KES 218</p>
+          </div>
+        </div>
+        <h3 className="tile__title">Search a name, a till, a receipt</h3>
+        <p className="tile__body">Any counterparty’s full history — then export what you’re looking at as CSV.</p>
+      </article>
+    </div>
+  )
+}
+
+function SampuliTiles() {
+  return (
+    <div className="bento">
+      <article className="tile" data-reveal>
+        <p className="tile__big">27</p>
+        <h3 className="tile__title">Country packs, Kenya first</h3>
+        <p className="tile__body">Africa’s fifteen largest economies plus Rwanda, and eleven major-currency markets.</p>
+      </article>
+      <article className="tile" data-reveal>
+        <div className="demo">
+          <div className="demo__card">
+            <p className="demo__pan">4048 8912 3456 7893</p>
+            <p className="demo__ok">✓ Passes the Luhn check · belongs to no one</p>
+          </div>
+        </div>
+        <h3 className="tile__title">Real formats, no real people</h3>
+        <p className="tile__body">Every value is generated in the browser and format-checked. Nothing is collected or stored.</p>
+      </article>
+      <article className="tile" data-reveal>
+        <p className="tile__big">4 formats</p>
+        <h3 className="tile__title">CSV · JSON · NDJSON · SQL</h3>
+        <p className="tile__body">Plus linked datasets — customers and transactions with real foreign keys.</p>
+      </article>
+      <article className="tile" data-reveal>
+        <p className="tile__big">220 tests</p>
+        <h3 className="tile__title">On every release</h3>
+        <p className="tile__body">Checksums, pack contracts and export shapes run green in CI before anything ships.</p>
+      </article>
+    </div>
+  )
+}
+
+const TILES = { zaamu: ZaamuTiles, pesascope: PesaTiles, sampuli: SampuliTiles }
+const STORIES = { zaamu: ZaamuStory, pesascope: PesaStory, sampuli: SampuliLive }
+
+/* ------------------------------------------------------------------ *
+ * Chapter
+ * ------------------------------------------------------------------ */
+
+function Chapter({ p }) {
+  const Tiles = TILES[p.id]
+  const Story = STORIES[p.id]
+  const style = { '--c1': p.c1, '--c2': p.c2, '--deep': p.deep, '--glow': p.glow, '--screen-bg': p.screenBg }
   return (
     <section id={p.id} className={`chapter chapter--${p.tone}`} style={style}>
       <div className="chapter__glow" aria-hidden="true" />
       <div className="chapter__inner">
         <header className="chapter__head" data-reveal>
-          <p className="chapter__eyebrow">
-            <span className="chapter__pill">
-              <span className="chapter__dot" aria-hidden="true" />
-              {p.name}
-            </span>
+          <p className="chapter__pill">
+            <span className="chapter__dot" aria-hidden="true" />
+            {p.name}
             <span className="chapter__cat">{p.eyebrow}</span>
           </p>
           <h2 className="chapter__title">
-            <span className="grad">{p.headline[0]}</span>
+            <span className="chapter__accent">{p.headline[0]}</span>
             <br />
             {p.headline[1]}
           </h2>
@@ -212,17 +533,14 @@ function Chapter({ p, index }) {
         <div className="stage" data-reveal>
           <Laptop src={p.shots.desktop} alt={`${p.name} on a laptop`} />
           <Phone src={p.shots.mobile} alt={`${p.name} on a phone`} />
+          <div className="stage__floor" aria-hidden="true" />
         </div>
+      </div>
 
-        <div className="bento">
-          {p.tiles.map((t, i) => (
-            <article key={t.title} className="tile" data-reveal style={{ transitionDelay: `${i * 70}ms` }}>
-              <p className="tile__big">{t.big}</p>
-              <h3 className="tile__title">{t.title}</h3>
-              <p className="tile__body">{t.body}</p>
-            </article>
-          ))}
-        </div>
+      <Story />
+
+      <div className="chapter__inner">
+        <Tiles />
       </div>
     </section>
   )
@@ -269,9 +587,8 @@ export default function App() {
         </div>
       </section>
 
-      {/* PRODUCT CHAPTERS */}
-      {PRODUCTS.map((p, i) => (
-        <Chapter key={p.id} p={p} index={i} />
+      {PRODUCTS.map((p) => (
+        <Chapter key={p.id} p={p} />
       ))}
 
       {/* THE LAB */}
@@ -296,18 +613,19 @@ export default function App() {
         </div>
       </section>
 
-      {/* CONTACT */}
+      {/* CONTACT — dark, to bookend the hero */}
       <section id="contact" className="contact">
+        <div className="contact__glow" aria-hidden="true" />
         <div className="contact__inner" data-reveal>
           <h2 className="contact__title">
-            <span className="grad-hero">Let’s build</span> what lasts.
+            Let’s build <span className="grad-hero">what lasts.</span>
           </h2>
           <p className="contact__sub">
             Founders, partners, and investors sizing up what’s next from the lab — the door is open.
           </p>
           <div className="contact__actions">
-            <a href={`mailto:${CONTACT_EMAIL}`} className="btn btn--dark">Say hello <Arrow /></a>
-            <a href="#zaamu" className="btn btn--ghost">Explore the products</a>
+            <a href={`mailto:${CONTACT_EMAIL}`} className="btn btn--light">Say hello <Arrow /></a>
+            <a href="#zaamu" className="btn btn--outline">Explore the products</a>
           </div>
           <p className="contact__email">{CONTACT_EMAIL}</p>
         </div>
