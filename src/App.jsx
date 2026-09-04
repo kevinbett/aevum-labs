@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 /* ------------------------------------------------------------------ *
  * Content
@@ -6,101 +6,98 @@ import { useEffect, useRef, useState } from 'react'
 
 const CONTACT_EMAIL = 'support@zaamu.com'
 
-const PROJECTS = [
+const PRODUCTS = [
   {
     id: 'zaamu',
     name: 'Zaamu',
-    accent: '#F0A83C',
-    accentSoft: 'rgba(240,168,60,0.14)',
     domain: 'zaamu.com',
     url: 'https://zaamu.com',
-    category: 'Booking SaaS · East Africa',
-    tagline: 'Your shop’s booking page.',
-    description:
-      'A booking platform for barbershops, salons and spas. Any shop can self-onboard, publish a booking page, and run staff, services and appointments — with receptionist roles, no-show protection and commission tracking built in. Multi-tenant from day one.',
-    stack: ['React', 'Vite', 'Supabase', 'Postgres · RLS'],
-    status: 'Live',
-    metric: { value: 'Multi-tenant', label: 'any shop, self-serve' },
+    tone: 'light',
+    c1: '#F5A524',
+    c2: '#FF6A3D',
+    glow: 'rgba(255, 122, 61, 0.28)',
+    eyebrow: 'Booking for barbershops, salons & spas',
+    headline: ['Your shop’s booking page.', 'Your link, your customers.'],
+    sub: 'Any shop sets up in ten minutes on the phone it already has, shares one link on WhatsApp, and the book fills itself. Customers see your shop — nobody else’s.',
+    shots: { desktop: '/shots/zaamu-desktop.jpg', mobile: '/shots/zaamu-mobile.jpg' },
+    tiles: [
+      { big: '10 min', title: 'Set up on the phone you have', body: 'No laptop, no onboarding call. Add services, staff and hours, and your booking page is live.' },
+      { big: 'One link', title: 'Your link is the only door', body: 'zaamu.com/book/your-shop — share it on WhatsApp. No app for customers to install, ever.' },
+      { big: 'One book', title: 'Walk-ins and online together', body: 'Receptionist roles, staff schedules, reschedules and no-show protection in a single calendar.' },
+      { big: 'Self-serve', title: 'Multi-tenant from day one', body: 'Every shop onboards itself — priced in KES, built for how Kenyan shops actually run.' },
+    ],
   },
   {
     id: 'pesascope',
     name: 'PesaScope',
-    accent: '#34D399',
-    accentSoft: 'rgba(52,211,153,0.13)',
     domain: 'pesascope.site',
     url: 'https://pesascope.site',
-    category: 'Personal finance · Privacy-first',
-    tagline: 'Your M-Pesa statement, decoded.',
-    description:
-      'Drop in Safaricom’s password-protected M-Pesa statement and get a spending dashboard: who you pay most, where your money goes, regular payments, fees, and a search that reconciles to the cent. Everything runs in your browser — nothing is ever uploaded.',
-    stack: ['React', 'Vite', 'pdf.js', '100% client-side'],
-    status: 'Live',
-    metric: { value: 'Zero upload', label: 'your data never leaves the tab' },
+    tone: 'dark',
+    c1: '#34D399',
+    c2: '#0EA5A5',
+    glow: 'rgba(52, 211, 153, 0.26)',
+    eyebrow: 'Personal finance · privacy-first',
+    headline: ['Your M‑Pesa statement,', 'decoded.'],
+    sub: 'Drop in Safaricom’s password-protected statement and see who you pay most, where the money goes, what the fees really cost — every figure reconciled to the cent.',
+    shots: { desktop: '/shots/pesascope-desktop.jpg', mobile: '/shots/pesascope-mobile.jpg' },
+    tiles: [
+      { big: '0 uploads', title: 'Nothing leaves your browser', body: 'The PDF is unlocked and parsed on your device with pdf.js. Close the tab and it’s gone.' },
+      { big: 'To the cent', title: 'Reconciled against the statement', body: 'Totals match the statement’s own SUMMARY page. If a shilling is off, the parser says so.' },
+      { big: 'Ranked', title: 'People, merchants, PayBills', body: 'Who you send to, who sends to you, and the fee attached to every transaction.' },
+      { big: 'Search', title: 'A name, a till, a receipt', body: 'Type anything and get that counterparty’s full history — then export what you’re looking at as CSV.' },
+    ],
   },
   {
     id: 'sampuli',
     name: 'Sampuli',
-    accent: '#8B7FF5',
-    accentSoft: 'rgba(139,127,245,0.15)',
     domain: 'sampuli.site',
     url: 'https://sampuli.site',
-    category: 'Developer tools · QA',
-    tagline: 'Synthetic test data, done right.',
-    description:
-      'Realistic, format-valid sample data for software testing — 27 country packs from Kenya to the US. Phone prefixes, ID shapes, tax PINs and Luhn-checked test cards follow real formats but belong to no real person. Export to CSV, JSON, SQL and more.',
-    stack: ['React', 'Vite', 'Vitest', '27 country packs'],
-    status: 'Live',
-    metric: { value: '27 packs', label: 'Kenya to the US' },
+    tone: 'light',
+    c1: '#6366F1',
+    c2: '#D946EF',
+    glow: 'rgba(99, 102, 241, 0.26)',
+    eyebrow: 'Test data for software teams',
+    headline: ['Synthetic data that', 'passes every check.'],
+    sub: 'Realistic, format-valid sample data for QA — phone prefixes, national IDs, KRA PINs and Luhn-checked test cards that follow real formats and belong to no real person.',
+    shots: { desktop: '/shots/sampuli-desktop.jpg', mobile: '/shots/sampuli-mobile.jpg' },
+    tiles: [
+      { big: '27', title: 'Country packs, Kenya first', body: 'Africa’s fifteen largest economies plus Rwanda, and eleven major-currency markets from the US to Japan.' },
+      { big: 'Valid', title: 'Real formats, no real people', body: 'Every value is generated in the browser and format-checked. No personal data is used or stored.' },
+      { big: '1 click', title: 'One value, one click', body: 'A quick strip for the field you need right now — phone, ID, SWIFT/BIC, PayBill — re-rolled on tap.' },
+      { big: 'CSV · SQL', title: 'Export anywhere', body: 'CSV, JSON, NDJSON and SQL, plus linked datasets with customer → transaction foreign keys.' },
+    ],
   },
 ]
 
 const PRINCIPLES = [
-  {
-    title: 'Built to last',
-    body: 'We optimise for the long run — clean code, few dependencies, and products we can still ship confidently years from now. Longevity is a feature, not an afterthought.',
-  },
-  {
-    title: 'Built for the real world',
-    body: 'Every product ships against messy real-world data and unreliable networks. If it doesn’t hold up on a Nairobi 3G connection, it isn’t done.',
-  },
-  {
-    title: 'Privacy by default',
-    body: 'PesaScope never uploads your statement. Sampuli invents data that belongs to no one. Your data is yours — that’s a design constraint, not a policy page.',
-  },
-  {
-    title: 'Small team, high craft',
-    body: 'No committees, no slideware. Products are designed and built end-to-end by the people who care about the details.',
-  },
-]
-
-const STATS = [
-  { value: '3', label: 'products live' },
-  { value: '3', label: 'domains in production' },
-  { value: '27', label: 'country data packs' },
-  { value: '100%', label: 'built in-house' },
+  { title: 'Built to last', body: 'Clean code, few dependencies, and products we can still ship confidently years from now. Longevity is a feature, not an afterthought.' },
+  { title: 'Built for the real world', body: 'Messy statements, flaky networks, phones that aren’t new. If it doesn’t hold up on a Nairobi 3G connection, it isn’t done.' },
+  { title: 'Privacy by default', body: 'PesaScope never uploads your statement. Sampuli invents data that belongs to no one. That’s a design constraint, not a policy page.' },
+  { title: 'Small team, high craft', body: 'No committees, no slideware. Each product is designed and built end-to-end by the people who care about the details.' },
 ]
 
 /* ------------------------------------------------------------------ *
- * Reveal-on-scroll hook
+ * Reveal-on-scroll
  * ------------------------------------------------------------------ */
 
 function useReveal() {
   useEffect(() => {
     const els = Array.from(document.querySelectorAll('[data-reveal]'))
-    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (!('IntersectionObserver' in window) || reduce) {
       els.forEach((el) => el.classList.add('is-visible'))
       return
     }
     const io = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible')
-            io.unobserve(entry.target)
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-visible')
+            io.unobserve(e.target)
           }
         })
       },
-      { threshold: 0.14, rootMargin: '0px 0px -40px 0px' },
+      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
     )
     els.forEach((el) => io.observe(el))
     return () => io.disconnect()
@@ -108,68 +105,23 @@ function useReveal() {
 }
 
 /* ------------------------------------------------------------------ *
- * Small components
+ * Pieces
  * ------------------------------------------------------------------ */
 
-function Logomark({ size = 34 }) {
+function Logomark({ size = 28 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden="true" className="logomark">
       <defs>
-        <linearGradient id="lm-molten" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#FFC24B" />
-          <stop offset="0.5" stopColor="#FF7A2F" />
-          <stop offset="1" stopColor="#D6402E" />
+        <linearGradient id="lm-grad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#F5A524" />
+          <stop offset="0.5" stopColor="#FF6A3D" />
+          <stop offset="1" stopColor="#D946EF" />
         </linearGradient>
       </defs>
-      <rect width="64" height="64" rx="15" fill="#141416" />
-      <rect x="1" y="1" width="62" height="62" rx="14" fill="none" stroke="rgba(255,255,255,0.08)" />
-      {/* concentric growth rings — age rings, a mark of longevity; centre slightly
-          offset for an organic, tree-ring feel */}
-      <circle cx="33.5" cy="33" r="18" fill="none" stroke="url(#lm-molten)" strokeWidth="3" opacity="0.9" />
-      <circle cx="32.6" cy="32.4" r="12" fill="none" stroke="url(#lm-molten)" strokeWidth="3" opacity="0.62" />
-      <circle cx="31.8" cy="31.8" r="6" fill="none" stroke="url(#lm-molten)" strokeWidth="3" opacity="0.85" />
-      <circle cx="31.4" cy="31.6" r="2" fill="#FFC24B" />
-    </svg>
-  )
-}
-
-function Wordmark() {
-  return (
-    <a href="#top" className="wordmark" aria-label="Aevum Labs — home">
-      <Logomark />
-      <span className="wordmark__text">
-        Aevum<span className="wordmark__labs">Labs</span>
-      </span>
-    </a>
-  )
-}
-
-function ContourField() {
-  // Decorative ambient strata (time-layer) lines behind the hero.
-  const lines = Array.from({ length: 9 })
-  return (
-    <svg className="contours" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      {lines.map((_, i) => {
-        const y = 120 + i * 62
-        const amp = 26 + i * 6
-        return (
-          <path
-            key={i}
-            d={`M-50 ${y} C 220 ${y - amp}, 420 ${y + amp}, 640 ${y - amp * 0.6} S 1040 ${y + amp}, 1260 ${y - amp * 0.4}`}
-            fill="none"
-            stroke="url(#contour-grad)"
-            strokeWidth="1"
-            opacity={0.5 - i * 0.03}
-          />
-        )
-      })}
-      <defs>
-        <linearGradient id="contour-grad" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stopColor="rgba(255,122,47,0)" />
-          <stop offset="0.5" stopColor="rgba(255,150,80,0.55)" />
-          <stop offset="1" stopColor="rgba(214,64,46,0)" />
-        </linearGradient>
-      </defs>
+      <circle cx="33.5" cy="33" r="18" fill="none" stroke="url(#lm-grad)" strokeWidth="3.2" opacity="0.95" />
+      <circle cx="32.6" cy="32.4" r="12" fill="none" stroke="url(#lm-grad)" strokeWidth="3.2" opacity="0.6" />
+      <circle cx="31.8" cy="31.8" r="6" fill="none" stroke="url(#lm-grad)" strokeWidth="3.2" opacity="0.9" />
+      <circle cx="31.4" cy="31.6" r="2.2" fill="#F5A524" />
     </svg>
   )
 }
@@ -177,7 +129,7 @@ function ContourField() {
 function Nav() {
   const [scrolled, setScrolled] = useState(false)
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12)
+    const onScroll = () => setScrolled(window.scrollY > 8)
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -185,72 +137,88 @@ function Nav() {
   return (
     <header className={`nav ${scrolled ? 'nav--scrolled' : ''}`}>
       <div className="nav__inner">
-        <Wordmark />
-        <nav className="nav__links" aria-label="Primary">
-          <a href="#work">Work</a>
-          <a href="#studio">Studio</a>
-          <a href="#contact" className="nav__cta">
-            Get in touch
-          </a>
+        <a href="#top" className="wordmark" aria-label="Aevum Labs — home">
+          <Logomark />
+          <span>Aevum<span className="wordmark__labs">Labs</span></span>
+        </a>
+        <nav className="nav__links" aria-label="Products">
+          {PRODUCTS.map((p) => (
+            <a key={p.id} href={`#${p.id}`}>{p.name}</a>
+          ))}
+          <a href="#lab">The lab</a>
         </nav>
+        <a href="#contact" className="nav__cta">Get in touch</a>
       </div>
     </header>
   )
 }
 
-function ArrowIcon() {
+function Arrow() {
   return (
-    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" className="arrow">
-      <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" className="arrow">
+      <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }
 
-function ProjectCard({ project, index }) {
-  const style = {
-    '--accent': project.accent,
-    '--accent-soft': project.accentSoft,
-    transitionDelay: `${index * 90}ms`,
-  }
+function Laptop({ src, alt }) {
   return (
-    <a
-      href={project.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="card"
-      style={style}
-      data-reveal
-    >
-      <div className="card__glow" aria-hidden="true" />
-      <div className="card__top">
-        <span className="card__category">{project.category}</span>
-        <span className="card__status">
-          <span className="dot" /> {project.status}
-        </span>
+    <div className="laptop">
+      <div className="laptop__screen">
+        <img src={src} alt={alt} loading="lazy" decoding="async" />
       </div>
+      <div className="laptop__base"><span /></div>
+    </div>
+  )
+}
 
-      <h3 className="card__name">{project.name}</h3>
-      <p className="card__tagline">{project.tagline}</p>
-      <p className="card__desc">{project.description}</p>
+function Phone({ src, alt }) {
+  return (
+    <div className="phone">
+      <div className="phone__island" aria-hidden="true" />
+      <img src={src} alt={alt} loading="lazy" decoding="async" />
+    </div>
+  )
+}
 
-      <div className="card__metric">
-        <span className="card__metric-value">{project.metric.value}</span>
-        <span className="card__metric-label">{project.metric.label}</span>
+function Chapter({ p, index }) {
+  const style = { '--c1': p.c1, '--c2': p.c2, '--glow': p.glow }
+  return (
+    <section id={p.id} className={`chapter chapter--${p.tone}`} style={style}>
+      <div className="chapter__glow" aria-hidden="true" />
+      <div className="chapter__inner">
+        <header className="chapter__head" data-reveal>
+          <p className="chapter__eyebrow">
+            <span className="chapter__dot" aria-hidden="true" />
+            {p.name} <span className="chapter__sep">·</span> {p.eyebrow}
+          </p>
+          <h2 className="chapter__title">
+            <span className="grad">{p.headline[0]}</span>
+            <br />
+            {p.headline[1]}
+          </h2>
+          <p className="chapter__sub">{p.sub}</p>
+          <a href={p.url} target="_blank" rel="noopener noreferrer" className="chapter__link">
+            Visit {p.domain} <Arrow />
+          </a>
+        </header>
+
+        <div className="stage" data-reveal>
+          <Laptop src={p.shots.desktop} alt={`${p.name} on a laptop`} />
+          <Phone src={p.shots.mobile} alt={`${p.name} on a phone`} />
+        </div>
+
+        <div className="bento">
+          {p.tiles.map((t, i) => (
+            <article key={t.title} className="tile" data-reveal style={{ transitionDelay: `${i * 70}ms` }}>
+              <p className="tile__big">{t.big}</p>
+              <h3 className="tile__title">{t.title}</h3>
+              <p className="tile__body">{t.body}</p>
+            </article>
+          ))}
+        </div>
       </div>
-
-      <ul className="card__stack">
-        {project.stack.map((t) => (
-          <li key={t}>{t}</li>
-        ))}
-      </ul>
-
-      <div className="card__foot">
-        <span className="card__domain">{project.domain}</span>
-        <span className="card__visit">
-          Visit <ArrowIcon />
-        </span>
-      </div>
-    </a>
+    </section>
   )
 }
 
@@ -259,8 +227,8 @@ function ProjectCard({ project, index }) {
  * ------------------------------------------------------------------ */
 
 export default function App() {
-  const year = new Date().getFullYear()
   useReveal()
+  const year = new Date().getFullYear()
 
   return (
     <div id="top" className="page">
@@ -268,134 +236,86 @@ export default function App() {
 
       {/* HERO */}
       <section className="hero">
-        <div className="hero__bg" aria-hidden="true">
-          <ContourField />
-          <div className="hero__glow hero__glow--1" />
-          <div className="hero__glow hero__glow--2" />
+        <div className="aurora" aria-hidden="true">
+          <span className="aurora__a" />
+          <span className="aurora__b" />
+          <span className="aurora__c" />
         </div>
-
         <div className="hero__inner">
-          <p className="hero__eyebrow" data-reveal>
-            <span className="ember-dot" /> Independent product studio · Nairobi, Kenya
+          <p className="hero__eyebrow hero-anim" style={{ animationDelay: '0ms' }}>
+            Aevum Labs · Independent product studio
           </p>
-          <h1 className="hero__title" data-reveal>
-            We build software{' '}
-            <span className="molten">made to last</span>.
+          <h1 className="hero__title">
+            <span className="hero-anim" style={{ animationDelay: '80ms' }}>Software</span>{' '}
+            <span className="hero-anim grad-hero" style={{ animationDelay: '180ms' }}>made to last.</span>
           </h1>
-          <p className="hero__lede" data-reveal>
-            Aevum Labs designs, builds and runs its own software products end-to-end — durable
-            tools for real people and real businesses, engineered to endure, not just to launch.
+          <p className="hero__sub hero-anim" style={{ animationDelay: '300ms' }}>
+            Three products. Live today. Engineered to endure.
           </p>
-          <div className="hero__actions" data-reveal>
-            <a href="#work" className="btn btn--primary">
-              See the work <ArrowIcon />
-            </a>
-            <a href="#contact" className="btn btn--ghost">
-              Work with us
-            </a>
-          </div>
-
-          <div className="hero__stats" data-reveal>
-            {STATS.map((s) => (
-              <div key={s.label} className="stat">
-                <span className="stat__value">{s.value}</span>
-                <span className="stat__label">{s.label}</span>
-              </div>
+          <div className="hero__chips hero-anim" style={{ animationDelay: '420ms' }}>
+            {PRODUCTS.map((p) => (
+              <a key={p.id} href={`#${p.id}`} className="chip" style={{ '--c1': p.c1, '--c2': p.c2 }}>
+                <span className="chip__dot" aria-hidden="true" />
+                {p.name}
+              </a>
             ))}
           </div>
         </div>
       </section>
 
-      {/* WORK */}
-      <section id="work" className="section">
-        <div className="section__head" data-reveal>
-          <span className="kicker">The work</span>
-          <h2 className="section__title">Three products, live today.</h2>
-          <p className="section__sub">
-            Each solves a problem we cared enough about to build all the way. Every one runs at its
-            own domain, on its own infrastructure.
-          </p>
-        </div>
+      {/* PRODUCT CHAPTERS */}
+      {PRODUCTS.map((p, i) => (
+        <Chapter key={p.id} p={p} index={i} />
+      ))}
 
-        <div className="cards">
-          {PROJECTS.map((p, i) => (
-            <ProjectCard key={p.id} project={p} index={i} />
-          ))}
-        </div>
-      </section>
-
-      {/* STUDIO / ETHOS */}
-      <section id="studio" className="section section--studio">
-        <div className="studio__grid">
-          <div className="studio__intro" data-reveal>
-            <span className="kicker">The studio</span>
-            <h2 className="section__title">
-              A lab, not an agency.
-            </h2>
-            <p className="studio__body">
-              Aevum Labs is an independent studio that builds and owns its products — from the first
-              sketch to the servers they run on. We take small, sharp ideas and build them into tools
-              people actually keep using.
+      {/* THE LAB */}
+      <section id="lab" className="lab">
+        <div className="lab__inner">
+          <header className="lab__head" data-reveal>
+            <p className="lab__eyebrow">The lab</p>
+            <h2 className="lab__title">A lab, not an agency.</h2>
+            <p className="lab__sub">
+              Aevum Labs builds and owns its products — from the first sketch to the servers they run on.
+              <em> Aevum</em> is Latin for a lifetime, an age. We build to that horizon.
             </p>
-            <p className="studio__body">
-              <em>Aevum</em> is Latin for a lifetime, an age. We build to that horizon: durable,
-              dependable software, made to last rather than just to launch.
-            </p>
-          </div>
-
+          </header>
           <div className="principles">
-            {PRINCIPLES.map((p, i) => (
-              <div key={p.title} className="principle" data-reveal style={{ transitionDelay: `${i * 70}ms` }}>
-                <div className="principle__mark" aria-hidden="true" />
-                <h3 className="principle__title">{p.title}</h3>
-                <p className="principle__body">{p.body}</p>
-              </div>
+            {PRINCIPLES.map((pr, i) => (
+              <article key={pr.title} className="principle" data-reveal style={{ transitionDelay: `${i * 70}ms` }}>
+                <h3>{pr.title}</h3>
+                <p>{pr.body}</p>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
       {/* CONTACT */}
-      <section id="contact" className="section section--contact">
-        <div className="contact" data-reveal>
-          <div className="contact__glow" aria-hidden="true" />
-          <span className="kicker">Get in touch</span>
+      <section id="contact" className="contact">
+        <div className="contact__inner" data-reveal>
           <h2 className="contact__title">
-            Building something — or want to back what we’re building?
+            <span className="grad-hero">Let’s build</span> what lasts.
           </h2>
           <p className="contact__sub">
-            Whether you’re a founder, a partner, or an investor sizing up what’s next from the
-            lab, the door is open.
+            Founders, partners, and investors sizing up what’s next from the lab — the door is open.
           </p>
           <div className="contact__actions">
-            <a href={`mailto:${CONTACT_EMAIL}`} className="btn btn--primary btn--lg">
-              Say hello <ArrowIcon />
-            </a>
-            <a href="#work" className="btn btn--ghost btn--lg">
-              Explore the products
-            </a>
+            <a href={`mailto:${CONTACT_EMAIL}`} className="btn btn--dark">Say hello <Arrow /></a>
+            <a href="#zaamu" className="btn btn--ghost">Explore the products</a>
           </div>
           <p className="contact__email">{CONTACT_EMAIL}</p>
         </div>
       </section>
 
-      {/* FOOTER */}
       <footer className="footer">
         <div className="footer__inner">
-          <div className="footer__brand">
-            <Logomark size={28} />
-            <span>Aevum Labs</span>
-          </div>
-          <nav className="footer__links" aria-label="Products">
-            {PROJECTS.map((p) => (
-              <a key={p.id} href={p.url} target="_blank" rel="noopener noreferrer">
-                {p.name}
-              </a>
+          <span className="footer__brand"><Logomark size={20} /> Aevum Labs</span>
+          <nav className="footer__links" aria-label="Product links">
+            {PRODUCTS.map((p) => (
+              <a key={p.id} href={p.url} target="_blank" rel="noopener noreferrer">{p.name}</a>
             ))}
           </nav>
-          <p className="footer__note">
-            Software made to last · Nairobi, Kenya · © {year}
-          </p>
+          <span className="footer__note">Software made to last · Nairobi, Kenya · © {year}</span>
         </div>
       </footer>
     </div>
