@@ -44,7 +44,7 @@ Everything lives in `src/App.jsx`:
 - **Products** — the `PROJECTS` array (name, tagline, description, stack, accent colour, live URL).
 - **Studio principles** — the `PRINCIPLES` array.
 - **Stats band** — the `STATS` array.
-- **Contact** — `CONTACT_EMAIL` and `GITHUB_URL` at the top of the file.
+- **Contact** — `CONTACT_EMAIL` at the top of the file.
 - **Studio name** — search `Aevum` in `src/App.jsx`, `index.html` and `public/og.svg` to rename.
 
 The logomark (concentric growth rings — age rings, a mark of longevity) is

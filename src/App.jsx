@@ -4,8 +4,7 @@ import { useEffect, useRef, useState } from 'react'
  * Content
  * ------------------------------------------------------------------ */
 
-const CONTACT_EMAIL = 'bettkevin757@gmail.com'
-const GITHUB_URL = 'https://github.com/kevinbett'
+const CONTACT_EMAIL = 'support@zaamu.com'
 
 const PROJECTS = [
   {
@@ -372,8 +371,8 @@ export default function App() {
             <a href={`mailto:${CONTACT_EMAIL}`} className="btn btn--primary btn--lg">
               Say hello <ArrowIcon />
             </a>
-            <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="btn btn--ghost btn--lg">
-              GitHub
+            <a href="#work" className="btn btn--ghost btn--lg">
+              Explore the products
             </a>
           </div>
           <p className="contact__email">{CONTACT_EMAIL}</p>
