@@ -1,5 +1,5 @@
 /* ============================================================
-   Rift Foundry — forge aesthetic
+   Aevum Labs — visual system (warm amber, "made to last")
    ============================================================ */
 
 :root {
@@ -60,7 +60,7 @@ a {
   isolation: isolate;
 }
 
-/* Ambient forge glow near the top of the page (scrolls with content,
+/* Ambient warm glow near the top of the page (scrolls with content,
    avoids fixed-background jank on iOS + reliable painting) */
 .page::before {
   content: '';
@@ -211,9 +211,10 @@ a {
   display: block;
   border-radius: 9px;
 }
-.wordmark__amp {
-  color: var(--orange);
-  margin: 0 1px;
+.wordmark__labs {
+  color: var(--muted);
+  font-weight: 500;
+  margin-left: 6px;
 }
 .nav__links {
   display: flex;

@@ -9,40 +9,38 @@
       <stop offset="0" stop-color="#FF7A2F" stop-opacity="0.28"/>
       <stop offset="1" stop-color="#FF7A2F" stop-opacity="0"/>
     </radialGradient>
-    <linearGradient id="contour" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#FF9650" stop-opacity="0"/>
-      <stop offset="0.5" stop-color="#FF9650" stop-opacity="0.5"/>
-      <stop offset="1" stop-color="#D6402E" stop-opacity="0"/>
-    </linearGradient>
   </defs>
 
   <rect width="1200" height="630" fill="#0A0A0B"/>
   <rect width="1200" height="630" fill="url(#glow)"/>
 
-  <!-- contour lines -->
-  <g fill="none" stroke="url(#contour)" stroke-width="1.4">
-    <path d="M-50 140 C 220 110, 420 170, 640 128 S 1040 176, 1260 132" opacity="0.5"/>
-    <path d="M-50 210 C 220 176, 420 244, 640 196 S 1040 250, 1260 200" opacity="0.42"/>
-    <path d="M-50 280 C 220 240, 420 320, 640 264 S 1040 326, 1260 268" opacity="0.34"/>
-    <path d="M-50 350 C 220 306, 420 396, 640 332 S 1040 400, 1260 336" opacity="0.26"/>
+  <!-- large faint growth-ring motif on the right -->
+  <g fill="none" stroke="url(#molten)" opacity="0.16" stroke-width="2">
+    <circle cx="1000" cy="150" r="70"/>
+    <circle cx="998" cy="148" r="120"/>
+    <circle cx="996" cy="146" r="175"/>
+    <circle cx="994" cy="144" r="235"/>
   </g>
 
   <!-- logomark -->
   <g transform="translate(90,86)">
     <rect width="76" height="76" rx="18" fill="#141416" stroke="rgba(255,255,255,0.1)"/>
-    <g transform="scale(1.187)">
-      <path d="M12 44 L26 20 L32 30 L38 20 L52 44" fill="none" stroke="url(#molten)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M22 44 L42 44" stroke="url(#molten)" stroke-width="4.5" stroke-linecap="round" opacity="0.55"/>
-      <circle cx="32" cy="14" r="3.2" fill="#FFC24B"/>
+    <g transform="translate(38,38) scale(1.187)">
+      <g transform="translate(-32,-32)">
+        <circle cx="33.5" cy="33" r="18" fill="none" stroke="url(#molten)" stroke-width="3" opacity="0.9"/>
+        <circle cx="32.6" cy="32.4" r="12" fill="none" stroke="url(#molten)" stroke-width="3" opacity="0.62"/>
+        <circle cx="31.8" cy="31.8" r="6" fill="none" stroke="url(#molten)" stroke-width="3" opacity="0.85"/>
+        <circle cx="31.4" cy="31.6" r="2" fill="#FFC24B"/>
+      </g>
     </g>
   </g>
-  <text x="182" y="136" font-family="'Plus Jakarta Sans',sans-serif" font-size="30" font-weight="700" fill="#EDECEF">Rift · Foundry</text>
+  <text x="182" y="136" font-family="'Plus Jakarta Sans',sans-serif" font-size="30" font-weight="700" fill="#EDECEF">Aevum <tspan fill="#86858E" font-weight="500">Labs</tspan></text>
 
   <!-- headline -->
-  <text x="90" y="330" font-family="Georgia,'Fraunces',serif" font-size="76" font-weight="400" fill="#EDECEF">We forge software in the</text>
-  <text x="90" y="418" font-family="Georgia,'Fraunces',serif" font-size="76" font-weight="400" font-style="italic" fill="url(#molten)">Great Rift Valley.</text>
+  <text x="90" y="330" font-family="Georgia,'Fraunces',serif" font-size="76" font-weight="400" fill="#EDECEF">We build software</text>
+  <text x="90" y="418" font-family="Georgia,'Fraunces',serif" font-size="76" font-weight="400" font-style="italic" fill="url(#molten)">made to last.</text>
 
-  <text x="90" y="486" font-family="'Plus Jakarta Sans',sans-serif" font-size="26" fill="#B6B5BD">Practical products, built to work anywhere.</text>
+  <text x="90" y="486" font-family="'Plus Jakarta Sans',sans-serif" font-size="26" fill="#B6B5BD">Durable products, engineered to endure.</text>
 
   <!-- product row -->
   <g font-family="'Plus Jakarta Sans',sans-serif" font-size="22" font-weight="600">

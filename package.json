@@ -1,9 +1,9 @@
 {
-  "name": "rift-foundry",
+  "name": "aevum-labs",
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Rift Foundry — an independent product studio. Showcase of Zaamu, PesaScope, and Sampuli.",
+  "description": "Aevum Labs — an independent product studio. Showcase of Zaamu, PesaScope, and Sampuli.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

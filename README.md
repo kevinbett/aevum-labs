@@ -1,7 +1,10 @@
-# Rift Foundry
+# Aevum Labs
 
 The single entry point to an independent product studio — a showcase of the products
-forged under Rift Foundry, built to reach the public, partners and investors.
+built under Aevum Labs, made to reach the public, partners and investors.
+
+*Aevum* is Latin for a lifetime, an age. The studio builds to that horizon: durable,
+dependable software, engineered to endure rather than just to launch.
 
 **Live products:**
 
@@ -42,8 +45,10 @@ Everything lives in `src/App.jsx`:
 - **Studio principles** — the `PRINCIPLES` array.
 - **Stats band** — the `STATS` array.
 - **Contact** — `CONTACT_EMAIL` and `GITHUB_URL` at the top of the file.
+- **Studio name** — search `Aevum` in `src/App.jsx`, `index.html` and `public/og.svg` to rename.
 
-The logomark is `public/favicon.svg`; the social card is `public/og.svg`.
+The logomark (concentric growth rings — age rings, a mark of longevity) is
+`public/favicon.svg`; the social card is `public/og.svg`.
 
 > Note: `og.svg` is a placeholder. Some social scrapers don't render SVG — once a
 > domain is set, export a 1200×630 **PNG** and point the absolute `og:image` URL in
