@@ -16,6 +16,7 @@ const PRODUCTS = [
     c1: '#F5A524',
     c2: '#FF6A3D',
     glow: 'rgba(255, 122, 61, 0.28)',
+    screenBg: '#faf7f1',
     eyebrow: 'Booking for barbershops, salons & spas',
     headline: ['Your shop’s booking page.', 'Your link, your customers.'],
     sub: 'Any shop sets up in ten minutes on the phone it already has, shares one link on WhatsApp, and the book fills itself. Customers see your shop — nobody else’s.',
@@ -36,6 +37,7 @@ const PRODUCTS = [
     c1: '#34D399',
     c2: '#0EA5A5',
     glow: 'rgba(52, 211, 153, 0.26)',
+    screenBg: '#f7f9f8',
     eyebrow: 'Personal finance · privacy-first',
     headline: ['Your M‑Pesa statement,', 'decoded.'],
     sub: 'Drop in Safaricom’s password-protected statement and see who you pay most, where the money goes, what the fees really cost — every figure reconciled to the cent.',
@@ -56,6 +58,7 @@ const PRODUCTS = [
     c1: '#6366F1',
     c2: '#D946EF',
     glow: 'rgba(99, 102, 241, 0.26)',
+    screenBg: '#f3f5f3',
     eyebrow: 'Test data for software teams',
     headline: ['Synthetic data that', 'passes every check.'],
     sub: 'Realistic, format-valid sample data for QA — phone prefixes, national IDs, KRA PINs and Luhn-checked test cards that follow real formats and belong to no real person.',
@@ -182,15 +185,18 @@ function Phone({ src, alt }) {
 }
 
 function Chapter({ p, index }) {
-  const style = { '--c1': p.c1, '--c2': p.c2, '--glow': p.glow }
+  const style = { '--c1': p.c1, '--c2': p.c2, '--glow': p.glow, '--screen-bg': p.screenBg }
   return (
     <section id={p.id} className={`chapter chapter--${p.tone}`} style={style}>
       <div className="chapter__glow" aria-hidden="true" />
       <div className="chapter__inner">
         <header className="chapter__head" data-reveal>
           <p className="chapter__eyebrow">
-            <span className="chapter__dot" aria-hidden="true" />
-            {p.name} <span className="chapter__sep">·</span> {p.eyebrow}
+            <span className="chapter__pill">
+              <span className="chapter__dot" aria-hidden="true" />
+              {p.name}
+            </span>
+            <span className="chapter__cat">{p.eyebrow}</span>
           </p>
           <h2 className="chapter__title">
             <span className="grad">{p.headline[0]}</span>
