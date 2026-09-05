@@ -11,6 +11,7 @@ dependable software, engineered to endure rather than just to launch.
 - [Zaamu](https://zaamu.com) — booking platform for barbershops, salons and spas (multi-tenant SaaS).
 - [PesaScope](https://pesascope.site) — privacy-first M-Pesa statement analyzer (100% client-side).
 - [Sampuli](https://sampuli.site) — synthetic test-data generator, 27 country packs.
+- [Mezani](https://mezani.health) — calm, pantry-aware meal planner for households.
 
 ## Stack
 

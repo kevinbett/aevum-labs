@@ -55,6 +55,22 @@ const PRODUCTS = [
     sub: 'Format-valid test data for QA — from KRA PINs to Luhn-checked cards — that belongs to no real person.',
     shots: { desktop: '/shots/sampuli-desktop', mobile: '/shots/sampuli-mobile.webp' },
   },
+  {
+    id: 'mezani',
+    name: 'Mezani',
+    domain: 'mezani.health',
+    url: 'https://mezani.health',
+    tone: 'dark',
+    c1: '#FB7185',
+    c2: '#E11D48',
+    deep: '#BE123C',
+    glow: 'rgba(244, 63, 94, 0.22)',
+    screenBg: '#fbf7f0',
+    eyebrow: 'Meal planning for households',
+    headline: ['A calm week of meals,', 'planned around your pantry.'],
+    sub: 'Pick the week’s meals, get one shopping list, and keep a pantry the whole household can trust.',
+    shots: { desktop: '/shots/mezani-desktop', mobile: '/shots/mezani-mobile.webp' },
+  },
 ]
 
 const PRINCIPLES = [
@@ -343,6 +359,64 @@ function PesaStory() {
   )
 }
 
+const MEZANI_CAPTIONS = [
+  { title: 'Pick the week’s meals.', body: 'Seven days on one calm board — no spreadsheet, no group-chat chaos.' },
+  { title: 'One list for the whole week.', body: 'Every ingredient rolls up into a single trip, quantities merged across meals.' },
+  { title: 'The pantry stays true.', body: 'Check off the trip and the pantry updates for everyone at home.' },
+]
+
+function MezaniStory() {
+  const [ref, idx] = useScrub(3)
+  return (
+    <div className="story" ref={ref} style={{ '--steps': 3 }}>
+      <div className="story__sticky">
+        <div className="story__grid">
+          <div className="story__captions">
+            {MEZANI_CAPTIONS.map((c, i) => (
+              <div key={c.title} className={`story__caption ${i === idx ? 'is-on' : ''}`} aria-hidden={i !== idx}>
+                <p className="story__step">{i + 1} / 3</p>
+                <h3>{c.title}</h3>
+                <p className="story__body">{c.body}</p>
+              </div>
+            ))}
+          </div>
+          <Phone className="phone--story">
+            <div className="mz" data-step={idx}>
+              {/* screen 1 — the week board */}
+              <div className="mz__screen mz__week">
+                <p className="mz__head">This week</p>
+                <div className="mz__row"><span className="mz__day">Mon</span> Tomato pasta</div>
+                <div className="mz__row"><span className="mz__day">Tue</span> Veg stir-fry</div>
+                <div className="mz__row mz__row--empty"><span className="mz__day">Wed</span> + Add a meal</div>
+                <div className="mz__row"><span className="mz__day">Thu</span> Bean stew</div>
+              </div>
+              {/* screen 2 — the trip */}
+              <div className="mz__screen mz__trip">
+                <p className="mz__head">Saturday trip</p>
+                <div className="mz__item"><span className="mz__box" /> Rice <b>2 kg</b></div>
+                <div className="mz__item"><span className="mz__box" /> Tomatoes <b>8</b></div>
+                <div className="mz__item mz__item--done"><span className="mz__box mz__box--on" /> Eggs <b>12</b></div>
+                <div className="mz__item"><span className="mz__box" /> Pasta <b>2 pk</b></div>
+              </div>
+              {/* screen 3 — pantry synced */}
+              <div className="mz__screen mz__pantry">
+                <p className="mz__head">Pantry</p>
+                <div className="mz__item mz__item--done"><span className="mz__tick">✓</span> Rice <b>2 kg</b></div>
+                <div className="mz__item mz__item--done"><span className="mz__tick">✓</span> Eggs <b>12</b></div>
+                <div className="mz__item mz__item--done"><span className="mz__tick">✓</span> Pasta <b>2 pk</b></div>
+                <div className="mz__sync">
+                  <span className="mz__avatars" aria-hidden="true"><i /><i /><i /></span>
+                  Synced for the household
+                </div>
+              </div>
+            </div>
+          </Phone>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 /* Sampuli: the product generates values, so the page does too — live. */
 const rnd = (n) => Math.floor(Math.random() * n)
 const digits = (n) => Array.from({ length: n }, () => rnd(10)).join('')
@@ -523,8 +597,46 @@ function SampuliTiles() {
   )
 }
 
-const TILES = { zaamu: ZaamuTiles, pesascope: PesaTiles, sampuli: SampuliTiles }
-const STORIES = { zaamu: ZaamuStory, pesascope: PesaStory, sampuli: SampuliLive }
+function MezaniTiles() {
+  return (
+    <div className="bento">
+      <article className="tile" data-reveal>
+        <div className="demo">
+          <div className="demo__recon">
+            <div><span>RICE</span><b>1.5 kg left</b></div>
+            <div><span>EGGS</span><b>4 left</b></div>
+            <p className="demo__ok">Low — added to Saturday’s trip</p>
+          </div>
+        </div>
+        <h3 className="tile__title">The pantry writes the shopping list</h3>
+        <p className="tile__body">Track what’s home; when staples run low they land on the next trip on their own.</p>
+      </article>
+      <article className="tile" data-reveal>
+        <div className="demo">
+          <div className="demo__invite">
+            <p>✉️ You’re invited to join <b>the Amani household</b> on Mezani</p>
+            <span className="demo__accept">Accept</span>
+          </div>
+        </div>
+        <h3 className="tile__title">One home, every person</h3>
+        <p className="tile__body">Profiles for everyone at home, sharing one plan and one pantry — joined by invite.</p>
+      </article>
+      <article className="tile" data-reveal>
+        <p className="tile__big">Sundays</p>
+        <h3 className="tile__title">The week plans itself</h3>
+        <p className="tile__body">A calm email each Sunday lays out the week ahead so the plan is done before Monday.</p>
+      </article>
+      <article className="tile" data-reveal>
+        <p className="tile__big">Free</p>
+        <h3 className="tile__title">For every household</h3>
+        <p className="tile__body">Feeding a home shouldn’t need a subscription. Mezani is free, for every household.</p>
+      </article>
+    </div>
+  )
+}
+
+const TILES = { zaamu: ZaamuTiles, pesascope: PesaTiles, sampuli: SampuliTiles, mezani: MezaniTiles }
+const STORIES = { zaamu: ZaamuStory, pesascope: PesaStory, sampuli: SampuliLive, mezani: MezaniStory }
 
 /* ------------------------------------------------------------------ *
  * Chapter
@@ -599,7 +711,7 @@ export default function App() {
             <span className="hero-anim grad-hero" style={{ animationDelay: '180ms' }}>made to last.</span>
           </h1>
           <p className="hero__sub hero-anim" style={{ animationDelay: '300ms' }}>
-            Three products. Live today. Engineered to endure.
+            Four products. Live today. Engineered to endure.
           </p>
           <div className="hero__chips hero-anim" style={{ animationDelay: '420ms' }}>
             {PRODUCTS.map((p) => (
