@@ -10,3 +10,6 @@ dist-ssr
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# screenshot intermediates (webp is what ships)
+public/shots/*.jpg

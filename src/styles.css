@@ -168,6 +168,7 @@ html.js [data-reveal].is-visible {
 }
 .nav__links a { transition: color 0.2s; }
 .nav__links a:hover { color: var(--text-l); }
+.nav__links a.is-active { color: var(--text-l); font-weight: 600; }
 .nav__cta {
   font-size: 13px;
   font-weight: 600;
