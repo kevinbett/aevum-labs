@@ -476,91 +476,55 @@ html.js [data-reveal].is-visible {
   z-index: 3;
 }
 
-/* ---------- scroll-scrubbed stories ---------- */
-.story {
-  position: relative;
-  height: calc(var(--steps, 3) * 80vh);
-}
-.story__sticky {
-  position: sticky;
-  top: var(--nav-h);
-  height: calc(100vh - var(--nav-h));
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-}
-@supports (height: 100svh) {
-  .story__sticky { height: calc(100svh - var(--nav-h)); }
-}
-.story__grid {
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 0 22px;
+/* ---------- journey: the real product, one step per frame ---------- */
+.journey {
   display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  gap: 48px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  max-width: 1010px;
+  margin: 0 auto 88px;
+  padding: 0 22px;
 }
-.story__captions { position: relative; min-height: 220px; }
-.story__caption {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
-  will-change: opacity, transform;
-  pointer-events: none;
-}
-.story__caption.is-on { opacity: 1; transform: none; }
-.story__step {
-  font-size: 12.5px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  margin-bottom: 12px;
-}
-.chapter--light .story__step { color: var(--deep); }
-.chapter--dark .story__step { color: var(--c1); }
-.story__caption h3 {
-  font-family: var(--display);
-  font-weight: 600;
-  font-size: clamp(26px, 3.4vw, 40px);
-  letter-spacing: -0.025em;
-  line-height: 1.08;
-  margin-bottom: 12px;
-}
-.story__body { font-size: 16px; line-height: 1.55; max-width: 34ch; }
-.chapter--light .story__body { color: var(--text-d2); }
-.chapter--dark .story__body { color: var(--text-l2); }
-
-/* story phone (Zaamu) */
-.phone--story {
+.journey__step { margin: 0; }
+.phone--journey {
   position: relative;
-  right: auto; bottom: auto;
-  width: 240px;
+  right: auto;
+  bottom: auto;
+  width: 100%;
   min-width: 0;
-  flex: none;
 }
-/* real product screens inside the story phone */
-.shots { position: absolute; inset: 0; }
-.shots img {
-  position: absolute;
-  inset: 8% 0 0 0; /* below the island, like the stage phone */
+.phone--journey img {
   width: 100%;
   height: 92%;
+  margin-top: 8%;
   object-fit: cover;
   object-position: top;
-  opacity: 0;
-  transform: translateX(18px);
-  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
-  will-change: opacity, transform;
 }
-.shots[data-step='0'] img:nth-of-type(1),
-.shots[data-step='1'] img:nth-of-type(2),
-.shots[data-step='2'] img:nth-of-type(3) { opacity: 1; transform: none; }
+.journey__caption { text-align: center; margin-top: 22px; padding: 0 6px; }
+.journey__num {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  margin-bottom: 10px;
+  font-variant-numeric: tabular-nums;
+}
+.journey__caption h3 {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+.journey__body { font-size: 14.5px; line-height: 1.55; max-width: 30ch; margin: 0 auto; }
+.chapter--light .journey__body { color: var(--text-d2); }
+.chapter--dark .journey__body { color: var(--text-l2); }
 
 /* ---------- bento (2×2, each tile holds a real thing) ---------- */
 .bento {
@@ -821,12 +785,18 @@ html.js [data-reveal].is-visible {
     max-width: 300px;
     margin: 0 auto;
   }
-  .story { height: calc(var(--steps, 3) * 92vh); }
-  .story__grid { grid-template-columns: 1fr; gap: 26px; justify-items: center; text-align: center; }
-  .story__captions { min-height: 170px; width: 100%; }
-  .story__caption { align-items: center; }
-  .story__body { max-width: 40ch; }
-  .phone--story { width: 200px; }
+  .journey {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 18px;
+    padding: 0 24px 8px;
+    margin-bottom: 64px;
+  }
+  .journey::-webkit-scrollbar { display: none; }
+  .journey__step { flex: 0 0 74%; max-width: 300px; scroll-snap-align: center; }
   .bento { grid-template-columns: 1fr; }
   .lab, .contact { padding: 88px 20px; }
   .footer__note { margin-left: 0; width: 100%; }
@@ -843,9 +813,5 @@ html.js [data-reveal].is-visible {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   html { scroll-behavior: auto; }
   html.js [data-reveal] { opacity: 1; transform: none; filter: none; }
-  .story { height: auto; padding: 40px 0 64px; }
-  .story__sticky { position: static; height: auto; }
-  .story__captions { min-height: 0; }
-  .story__caption { position: static; opacity: 1; transform: none; margin-bottom: 20px; pointer-events: auto; }
   .grad-hero { animation: none !important; }
 }
