@@ -254,7 +254,7 @@ const PESA_CAPTIONS = [
 const PESA_SHOTS = ['/shots/pesascope-app-1.webp', '/shots/pesascope-app-2.webp', '/shots/pesascope-app-3.webp']
 
 const SAMPULI_CAPTIONS = [
-  { title: 'One value, one click.', body: 'Phone, ID, KRA PIN, SWIFT — always format-valid, re-rolled on tap.' },
+  { title: 'One value, one click.', body: 'Phones, national IDs, tax numbers, SWIFT/BIC — always format-true, re-rolled on tap.' },
   { title: 'A hundred records in a breath.', body: 'Tap a suggested field set and the batch appears instantly — export CSV, JSON, NDJSON or SQL.' },
   { title: 'Linked tables, real keys.', body: 'A customers parent and a transactions child joined by genuine foreign keys — reproducible with a seed.' },
 ]
@@ -277,12 +277,12 @@ const TERM_SCRIPT = [
   { t: 'out', text: 'added 1 package in 812ms' },
   { t: 'cmd', text: 'node' },
   { t: 'repl', text: "const { generate, generateMany } = require('@sampuli/data')" },
-  { t: 'repl', text: "generate('ke.phone')" },
-  { t: 'out', text: "'0712 345 678'" },
-  { t: 'repl', text: "generate('ke.kra_pin')" },
-  { t: 'out', text: "'A012345678Z'" },
-  { t: 'repl', text: "generateMany('ke.person', 100)" },
-  { t: 'out', text: "[ { name: 'Amina Kosgei', phone: '0733 219 480', … }, … 99 more ]" },
+  { t: 'repl', text: "generate('de.account')" },
+  { t: 'out', text: "'DE25100900002302466664'" },
+  { t: 'repl', text: "generate('us.routing')" },
+  { t: 'out', text: "'021000898'" },
+  { t: 'repl', text: "generateMany('jp.person', 100)" },
+  { t: 'out', text: "[ { name: 'Suzuki Yusuke', phone: '090-7937-4683', … }, … 99 more ]" },
 ]
 const PROMPT = { cmd: '$', repl: '>', out: '' }
 
@@ -451,8 +451,8 @@ function SampuliTiles() {
     <div className="bento">
       <article className="tile" data-reveal>
         <p className="tile__big">52</p>
-        <h3 className="tile__title">Country packs, Kenya first</h3>
-        <p className="tile__body">Nairobi to Singapore — each market researched and checksum-verified before it ships, omitted rather than guessed.</p>
+        <h3 className="tile__title">Country packs, six continents</h3>
+        <p className="tile__body">Each market researched and checksum-verified before it ships — omitted rather than guessed.</p>
       </article>
       <article className="tile" data-reveal>
         <a
