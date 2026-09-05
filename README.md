@@ -27,7 +27,7 @@ npm run build      # production build in dist/
 npm run preview    # serve the production build locally
 ```
 
-The `dist/` output is fully static — deploy it to Vercel, Netlify, or any static host.
+The `dist/` output is fully static — deploy it to Vercel, Netlify, or any static host. Live at https://aevumlabs.site (Vercel project `aevum-labs`; www 308-redirects to the apex).
 
 ## Deploy (Vercel)
 
