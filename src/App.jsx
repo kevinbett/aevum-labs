@@ -50,9 +50,9 @@ const PRODUCTS = [
     deep: '#4F46E5',
     glow: 'rgba(99, 102, 241, 0.26)',
     screenBg: '#f3f5f3',
-    eyebrow: 'Test data for software teams',
+    eyebrow: 'Test data · in the browser and on npm',
     headline: ['Synthetic data that', 'passes every check.'],
-    sub: 'Format-valid test data for QA — from KRA PINs to Luhn-checked cards — that belongs to no real person.',
+    sub: 'Format-true synthetic test data — 52 country packs, in the browser or one npm install — belonging to no real person.',
     shots: { desktop: '/shots/sampuli-desktop', mobile: '/shots/sampuli-mobile.webp' },
   },
   {
@@ -353,9 +353,18 @@ function SampuliTiles() {
   return (
     <div className="bento">
       <article className="tile" data-reveal>
-        <p className="tile__big">27</p>
+        <p className="tile__big">52</p>
         <h3 className="tile__title">Country packs, Kenya first</h3>
-        <p className="tile__body">Africa’s fifteen largest economies plus Rwanda, and eleven major-currency markets.</p>
+        <p className="tile__body">Nairobi to Singapore — each market researched and checksum-verified before it ships, omitted rather than guessed.</p>
+      </article>
+      <article className="tile" data-reveal>
+        <div className="demo">
+          <div className="demo__npm">
+            <p><span className="demo__prompt">$</span> npm install @sampuli/data</p>
+          </div>
+        </div>
+        <h3 className="tile__title">One install, every pack</h3>
+        <p className="tile__body">The same engine as an npm package — all 52 countries in your tests and CI. Free, MIT, zero dependencies.</p>
       </article>
       <article className="tile" data-reveal>
         <div className="demo">
@@ -365,17 +374,12 @@ function SampuliTiles() {
           </div>
         </div>
         <h3 className="tile__title">Real formats, no real people</h3>
-        <p className="tile__body">Every value is generated in the browser and format-checked. Nothing is collected or stored.</p>
+        <p className="tile__body">Everything is entirely synthetic, generated on your machine and format-checked. Nothing is collected or stored.</p>
       </article>
       <article className="tile" data-reveal>
-        <p className="tile__big">4 formats</p>
-        <h3 className="tile__title">CSV · JSON · NDJSON · SQL</h3>
-        <p className="tile__body">Plus linked datasets — customers and transactions with real foreign keys.</p>
-      </article>
-      <article className="tile" data-reveal>
-        <p className="tile__big">220 tests</p>
+        <p className="tile__big">440 tests</p>
         <h3 className="tile__title">On every release</h3>
-        <p className="tile__body">Checksums, pack contracts and export shapes run green in CI before anything ships.</p>
+        <p className="tile__body">Checksums proven against known vectors, pack contracts and export shapes — green in CI across the app and the package.</p>
       </article>
     </div>
   )
