@@ -48,13 +48,16 @@ Everything lives in `src/App.jsx`:
 - **Studio name** — search `Aevum` in `src/App.jsx`, `index.html` and `public/og.svg` to rename.
 
 The logomark (concentric growth rings — age rings, a mark of longevity) is
-`public/favicon.svg`; the social card is `public/og.svg`.
+`public/favicon.svg`; the social card is `public/og.jpg` (1200×630, referenced by
+absolute URL in `index.html` — update that URL when the domain changes).
 
-**Product screenshots** live in `public/shots/` (`<product>-desktop.jpg` at 1440×900 @2x,
-`<product>-mobile.jpg` at 393×852 @2x — the mobile size must match the CSS phone frame's
-aspect ratio or the image gets cropped). Recapture them with Playwright whenever a product's
-landing page changes materially.
+**Product screenshots** ship as WebP in `public/shots/` (`<product>-desktop-1440/2880.webp`
+via `srcset`, `<product>-mobile.webp` at 393×852 @2x — the mobile size must match the CSS
+phone frame's aspect ratio or the image gets cropped). When a product's landing page
+changes materially:
 
-> Note: `og.svg` is a placeholder. Some social scrapers don't render SVG — once a
-> domain is set, export a 1200×630 **PNG** and point the absolute `og:image` URL in
-> `index.html` at it for reliable link previews.
+```bash
+node scripts/capture-shots.cjs   # JPG intermediates (needs Playwright via NODE_PATH)
+npm run dev                      # make-assets encodes through the dev server
+node scripts/make-assets.cjs     # WebP files + og.jpg
+```

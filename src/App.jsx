@@ -21,7 +21,7 @@ const PRODUCTS = [
     eyebrow: 'Booking for barbershops, salons & spas',
     headline: ['Your shop’s booking page.', 'Your link, your customers.'],
     sub: 'Set up in ten minutes, share one link on WhatsApp, and the book fills itself.',
-    shots: { desktop: '/shots/zaamu-desktop.jpg', mobile: '/shots/zaamu-mobile.jpg' },
+    shots: { desktop: '/shots/zaamu-desktop', mobile: '/shots/zaamu-mobile.webp' },
   },
   {
     id: 'pesascope',
@@ -37,7 +37,7 @@ const PRODUCTS = [
     eyebrow: 'Personal finance · privacy-first',
     headline: ['Your M‑Pesa statement,', 'decoded.'],
     sub: 'Safaricom’s locked PDF becomes a spending dashboard — reconciled to the cent, entirely on your device.',
-    shots: { desktop: '/shots/pesascope-desktop.jpg', mobile: '/shots/pesascope-mobile.jpg' },
+    shots: { desktop: '/shots/pesascope-desktop', mobile: '/shots/pesascope-mobile.webp' },
   },
   {
     id: 'sampuli',
@@ -53,7 +53,7 @@ const PRODUCTS = [
     eyebrow: 'Test data for software teams',
     headline: ['Synthetic data that', 'passes every check.'],
     sub: 'Format-valid test data for QA — from KRA PINs to Luhn-checked cards — that belongs to no real person.',
-    shots: { desktop: '/shots/sampuli-desktop.jpg', mobile: '/shots/sampuli-mobile.jpg' },
+    shots: { desktop: '/shots/sampuli-desktop', mobile: '/shots/sampuli-mobile.webp' },
   },
 ]
 
@@ -151,11 +151,26 @@ function Logomark({ size = 28 }) {
 
 function Nav() {
   const [scrolled, setScrolled] = useState(false)
+  const [active, setActive] = useState('')
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8)
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+  useEffect(() => {
+    // Scrollspy: light up the section currently in the middle of the viewport
+    const ids = [...PRODUCTS.map((p) => p.id), 'lab']
+    const sections = ids.map((id) => document.getElementById(id)).filter(Boolean)
+    if (!('IntersectionObserver' in window) || !sections.length) return
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id) })
+      },
+      { rootMargin: '-40% 0px -55% 0px' },
+    )
+    sections.forEach((s) => io.observe(s))
+    return () => io.disconnect()
   }, [])
   return (
     <header className={`nav ${scrolled ? 'nav--scrolled' : ''}`}>
@@ -166,9 +181,11 @@ function Nav() {
         </a>
         <nav className="nav__links" aria-label="Products">
           {PRODUCTS.map((p) => (
-            <a key={p.id} href={`#${p.id}`}>{p.name}</a>
+            <a key={p.id} href={`#${p.id}`} className={active === p.id ? 'is-active' : ''} aria-current={active === p.id ? 'true' : undefined}>
+              {p.name}
+            </a>
           ))}
-          <a href="#lab">The lab</a>
+          <a href="#lab" className={active === 'lab' ? 'is-active' : ''} aria-current={active === 'lab' ? 'true' : undefined}>The lab</a>
         </nav>
         <a href="#contact" className="nav__cta">Get in touch</a>
       </div>
@@ -185,10 +202,18 @@ function Arrow() {
 }
 
 function Laptop({ src, alt }) {
+  // `src` is a basename; 1440w serves 1x screens, 2880w serves retina
   return (
     <div className="laptop">
       <div className="laptop__screen">
-        <img src={src} alt={alt} loading="lazy" decoding="async" />
+        <img
+          src={`${src}-1440.webp`}
+          srcSet={`${src}-1440.webp 1440w, ${src}-2880.webp 2880w`}
+          sizes="(max-width: 720px) 90vw, 862px"
+          alt={alt}
+          loading="lazy"
+          decoding="async"
+        />
       </div>
       <div className="laptop__base"><span /></div>
     </div>
@@ -639,7 +664,9 @@ export default function App() {
               <a key={p.id} href={p.url} target="_blank" rel="noopener noreferrer">{p.name}</a>
             ))}
           </nav>
-          <span className="footer__note">Software made to last · Nairobi, Kenya · © {year}</span>
+          <span className="footer__note">
+            No cookies, no trackers — this page collects nothing. · Software made to last · Nairobi, Kenya · © {year}
+          </span>
         </div>
       </footer>
     </div>
