@@ -656,6 +656,20 @@ html.js [data-reveal].is-visible {
   border-radius: 999px;
   padding: 6px 14px;
 }
+.demo__npm {
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #101116;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: #e6e6ef;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.demo__prompt { color: var(--deep); margin-right: 8px; }
+.chapter--light .demo__npm { box-shadow: 0 10px 26px -16px rgba(0, 0, 0, 0.5); }
 .demo__card {
   padding: 14px;
   border-radius: 14px;
