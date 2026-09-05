@@ -289,120 +289,24 @@ const ZAAMU_SHOTS = ['/shots/zaamu-book-1.webp', '/shots/zaamu-book-2.webp', '/s
 const MEZANI_SHOTS = ['/shots/mezani-app-1.webp', '/shots/mezani-app-2.webp', '/shots/mezani-app-3.webp']
 
 const PESA_CAPTIONS = [
-  { title: 'Drop in the locked PDF.', body: 'The “M‑PESA Full Statement” Safaricom emails you — password and all.' },
-  { title: 'Unlocked on your device.', body: 'The PIN opens it right in the browser. No account, no server, no copy anywhere.' },
-  { title: 'Your money, mapped.', body: 'People, merchants, fees and habits — every figure reconciled against the statement’s own summary.' },
+  { title: 'Drop in the locked PDF.', body: 'Safaricom’s password-protected statement, decrypted and read on your device only. Nothing uploads.' },
+  { title: 'The statement becomes a picture.', body: 'Money in, money out, Fuliza and fees — every figure reconciled against the statement’s own summary.' },
+  { title: 'Every shilling, findable.', body: 'Money flow over time, categories from Send money to Betting, and a list you can filter and export as CSV.' },
 ]
+const PESA_SHOTS = ['/shots/pesascope-app-1.webp', '/shots/pesascope-app-2.webp', '/shots/pesascope-app-3.webp']
 
-function PesaStory() {
-  const [ref, idx] = useScrub(3)
-  return (
-    <div className="story" ref={ref} style={{ '--steps': 3 }}>
-      <div className="story__sticky">
-        <div className="story__grid story__grid--flip">
-          <div className="ps" data-step={idx}>
-            <div className="ps__screen ps__file">
-              <div className="ps__doc" aria-hidden="true" />
-              <p className="ps__name">MPESA_Statement.pdf</p>
-              <p className="ps__lock">🔒 password-protected</p>
-            </div>
-            <div className="ps__screen ps__pin">
-              <div className="ps__dots" aria-hidden="true"><span /><span /><span /><span /></div>
-              <p className="ps__lock">Unlocked on this device</p>
-            </div>
-            <div className="ps__screen ps__dash">
-              <p className="ps__title">Where it went</p>
-              <div className="ps__bar"><i style={{ width: '86%' }} /><b>Send money</b></div>
-              <div className="ps__bar"><i style={{ width: '61%' }} /><b>PayBill</b></div>
-              <div className="ps__bar"><i style={{ width: '43%' }} /><b>Buy goods</b></div>
-              <div className="ps__bar"><i style={{ width: '20%' }} /><b>Fuliza</b></div>
-              <p className="ps__foot">✓ Reconciled to the cent · 0 bytes uploaded</p>
-            </div>
-          </div>
-          <div className="story__captions">
-            {PESA_CAPTIONS.map((c, i) => (
-              <div key={c.title} className={`story__caption ${i === idx ? 'is-on' : ''}`} aria-hidden={i !== idx}>
-                <p className="story__step">{i + 1} / 3</p>
-                <h3>{c.title}</h3>
-                <p className="story__body">{c.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
+const SAMPULI_CAPTIONS = [
+  { title: 'One value, one click.', body: 'Phone, ID, KRA PIN, SWIFT — always format-valid, re-rolled on tap.' },
+  { title: 'A hundred records in a breath.', body: 'Tap a suggested field set and the batch appears instantly — export CSV, JSON, NDJSON or SQL.' },
+  { title: 'Linked tables, real keys.', body: 'A customers parent and a transactions child joined by genuine foreign keys — reproducible with a seed.' },
+]
+const SAMPULI_SHOTS = ['/shots/sampuli-app-1.webp', '/shots/sampuli-app-2.webp', '/shots/sampuli-app-3.webp']
 
 const MEZANI_CAPTIONS = [
   { title: 'The week, planned.', body: 'Twenty-one meals on one calm board — breakfast to dinner, adults and children.' },
   { title: 'One list for the whole week.', body: 'Every ingredient rolls up into a single shopping list, quantities merged across meals.' },
   { title: 'A pantry you can trust.', body: 'What’s already home stays counted — the list only asks for what’s missing.' },
 ]
-
-/* Sampuli: the product generates values, so the page does too — live. */
-const rnd = (n) => Math.floor(Math.random() * n)
-const digits = (n) => Array.from({ length: n }, () => rnd(10)).join('')
-function genPhone() { return `07${10 + rnd(90)} ${digits(3)} ${digits(3)}` }
-function genId() { return `${1 + rnd(3)}${digits(7)}` }
-function genPin() { return `A${digits(9)}${'ABCDEFGHJKLMNPQRSTUVWXYZ'[rnd(24)]}` }
-function genCard() {
-  // Luhn-valid test PAN on a 404889 test BIN
-  const base = `404889${digits(9)}`
-  let sum = 0
-  for (let i = 0; i < 15; i++) {
-    let d = +base[14 - i]
-    if (i % 2 === 0) { d *= 2; if (d > 9) d -= 9 }
-    sum += d
-  }
-  const pan = base + ((10 - (sum % 10)) % 10)
-  return pan.replace(/(\d{4})(?=\d)/g, '$1 ')
-}
-
-const GENS = [
-  { label: 'Phone · Safaricom', fn: genPhone },
-  { label: 'National ID', fn: genId },
-  { label: 'KRA PIN', fn: genPin },
-  { label: 'Test card · Luhn ✓', fn: genCard },
-]
-
-function SampuliLive() {
-  const [values, setValues] = useState(() => GENS.map((g) => g.fn()))
-  const [tick, setTick] = useState(0)
-  const ref = useRef(null)
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const el = ref.current
-    if (!el) return
-    let timer = null
-    const io = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting && !timer) {
-        timer = setInterval(() => {
-          setValues(GENS.map((g) => g.fn()))
-          setTick((t) => t + 1)
-        }, 1400)
-      } else if (!e.isIntersecting && timer) {
-        clearInterval(timer)
-        timer = null
-      }
-    }, { threshold: 0.4 })
-    io.observe(el)
-    return () => { io.disconnect(); if (timer) clearInterval(timer) }
-  }, [])
-  return (
-    <div className="live" ref={ref} data-reveal>
-      <div className="live__panel">
-        {GENS.map((g, i) => (
-          <div key={g.label} className="live__field">
-            <span className="live__label">{g.label}</span>
-            <span key={tick} className="live__value">{values[i]}</span>
-          </div>
-        ))}
-      </div>
-      <p className="live__note">Every value above was invented on this page, just now. Format-valid. Belongs to no one.</p>
-    </div>
-  )
-}
 
 /* ------------------------------------------------------------------ *
  * Tiles — a real thing in every tile: a measurement or working UI
@@ -561,8 +465,8 @@ function MezaniTiles() {
 const TILES = { zaamu: ZaamuTiles, pesascope: PesaTiles, sampuli: SampuliTiles, mezani: MezaniTiles }
 const STORIES = {
   zaamu: () => <ShotStory captions={ZAAMU_CAPTIONS} images={ZAAMU_SHOTS} alt="The real Zaamu booking flow" />,
-  pesascope: PesaStory,
-  sampuli: SampuliLive,
+  pesascope: () => <ShotStory captions={PESA_CAPTIONS} images={PESA_SHOTS} alt="The real PesaScope dashboard (sample statement)" />,
+  sampuli: () => <ShotStory captions={SAMPULI_CAPTIONS} images={SAMPULI_SHOTS} alt="The real Sampuli generator" />,
   mezani: () => <ShotStory captions={MEZANI_CAPTIONS} images={MEZANI_SHOTS} alt="The real Mezani app" />,
 }
 

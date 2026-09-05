@@ -61,6 +61,8 @@ changes materially:
 node scripts/capture-shots.cjs        # landing-page JPG intermediates (Playwright via NODE_PATH)
 node scripts/capture-booking.cjs      # real Zaamu booking journey (test tenant, read-only)
 node scripts/capture-mezani-demo.cjs  # real Mezani app via its public guest demo
+node scripts/capture-pesascope-demo.cjs # real PesaScope dashboard via the sample statement
+node scripts/capture-sampuli-demo.cjs   # real Sampuli generator, batch + datasets
 npm run dev                      # make-assets encodes through the dev server
 node scripts/make-assets.cjs     # WebP files + og.jpg
 ```
