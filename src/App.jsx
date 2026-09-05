@@ -249,62 +249,28 @@ function Phone({ src, alt, children, className = '' }) {
  * Product stories — one shape per product, scrubbed by scroll
  * ------------------------------------------------------------------ */
 
-const ZAAMU_CAPTIONS = [
-  { title: 'Pick a service.', body: 'Prices in KES, durations honest. The menu is the shop’s own.' },
-  { title: 'Pick your barber, pick a window.', body: 'Only genuinely free slots show — the calendar can’t double-book.' },
-  { title: 'Confirmed.', body: 'The booking lands in the shop’s book and the reminder goes out on WhatsApp.' },
-]
-
-function ZaamuStory() {
-  const [ref, idx] = useScrub(3)
+/* A story told with REAL screens: three captures of the live product,
+   stacked and eagerly loaded so step changes never wait on the network. */
+function ShotStory({ captions, images, alt }) {
+  const [ref, idx] = useScrub(captions.length)
   return (
-    <div className="story" ref={ref} style={{ '--steps': 3 }}>
+    <div className="story" ref={ref} style={{ '--steps': captions.length }}>
       <div className="story__sticky">
         <div className="story__grid">
           <div className="story__captions">
-            {ZAAMU_CAPTIONS.map((c, i) => (
+            {captions.map((c, i) => (
               <div key={c.title} className={`story__caption ${i === idx ? 'is-on' : ''}`} aria-hidden={i !== idx}>
-                <p className="story__step">{i + 1} / 3</p>
+                <p className="story__step">{i + 1} / {captions.length}</p>
                 <h3>{c.title}</h3>
                 <p className="story__body">{c.body}</p>
               </div>
             ))}
           </div>
           <Phone className="phone--story">
-            <div className="zs" data-step={idx}>
-              {/* screen 1 — services */}
-              <div className="zs__screen zs__services">
-                <p className="zs__head">Yankee Clippers · Gigiri</p>
-                <p className="zs__label">Choose a service</p>
-                <div className="zs__row">Haircut <span>KES 500</span></div>
-                <div className="zs__row">Beard trim <span>KES 300</span></div>
-                <div className="zs__row zs__row--sel">Haircut &amp; Beard · 45 min <span>KES 800</span></div>
-              </div>
-              {/* screen 2 — barber + slot */}
-              <div className="zs__screen zs__slots">
-                <p className="zs__label">With</p>
-                <div className="zs__chips">
-                  <span className="zs__chip zs__chip--sel">James</span>
-                  <span className="zs__chip">Amina</span>
-                  <span className="zs__chip">Otis</span>
-                </div>
-                <p className="zs__label">Saturday</p>
-                <div className="zs__chips">
-                  <span className="zs__chip">09:00</span>
-                  <span className="zs__chip zs__chip--sel">10:30</span>
-                  <span className="zs__chip">12:15</span>
-                  <span className="zs__chip">16:00</span>
-                </div>
-              </div>
-              {/* screen 3 — confirmed */}
-              <div className="zs__screen zs__done">
-                <div className="zs__check" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" width="26" height="26"><path d="M4 12.5 9.5 18 20 6.5" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                </div>
-                <p className="zs__big">Booked with James</p>
-                <p className="zs__meta">Sat · 10:30 · KES 800</p>
-                <p className="zs__wa">Reminder sent on WhatsApp</p>
-              </div>
+            <div className="shots" data-step={idx}>
+              {images.map((src, i) => (
+                <img key={src} src={src} alt={`${alt} — step ${i + 1}`} loading="eager" decoding="async" />
+              ))}
             </div>
           </Phone>
         </div>
@@ -312,6 +278,15 @@ function ZaamuStory() {
     </div>
   )
 }
+
+const ZAAMU_CAPTIONS = [
+  { title: 'Choose a service.', body: 'Barber, massage or salon — real prices, real durations, the shop’s own menu.' },
+  { title: 'Pick your person.', body: 'Real barbers with real bios — or “Any available” finds the soonest open chair.' },
+  { title: 'Your details, then done.', body: 'Name and phone. No app, no account — confirmed in seconds.' },
+]
+const ZAAMU_SHOTS = ['/shots/zaamu-book-1.webp', '/shots/zaamu-book-2.webp', '/shots/zaamu-book-3.webp']
+
+const MEZANI_SHOTS = ['/shots/mezani-app-1.webp', '/shots/mezani-app-2.webp', '/shots/mezani-app-3.webp']
 
 const PESA_CAPTIONS = [
   { title: 'Drop in the locked PDF.', body: 'The “M‑PESA Full Statement” Safaricom emails you — password and all.' },
@@ -360,62 +335,10 @@ function PesaStory() {
 }
 
 const MEZANI_CAPTIONS = [
-  { title: 'Pick the week’s meals.', body: 'Seven days on one calm board — no spreadsheet, no group-chat chaos.' },
-  { title: 'One list for the whole week.', body: 'Every ingredient rolls up into a single trip, quantities merged across meals.' },
-  { title: 'The pantry stays true.', body: 'Check off the trip and the pantry updates for everyone at home.' },
+  { title: 'The week, planned.', body: 'Twenty-one meals on one calm board — breakfast to dinner, adults and children.' },
+  { title: 'One list for the whole week.', body: 'Every ingredient rolls up into a single shopping list, quantities merged across meals.' },
+  { title: 'A pantry you can trust.', body: 'What’s already home stays counted — the list only asks for what’s missing.' },
 ]
-
-function MezaniStory() {
-  const [ref, idx] = useScrub(3)
-  return (
-    <div className="story" ref={ref} style={{ '--steps': 3 }}>
-      <div className="story__sticky">
-        <div className="story__grid">
-          <div className="story__captions">
-            {MEZANI_CAPTIONS.map((c, i) => (
-              <div key={c.title} className={`story__caption ${i === idx ? 'is-on' : ''}`} aria-hidden={i !== idx}>
-                <p className="story__step">{i + 1} / 3</p>
-                <h3>{c.title}</h3>
-                <p className="story__body">{c.body}</p>
-              </div>
-            ))}
-          </div>
-          <Phone className="phone--story">
-            <div className="mz" data-step={idx}>
-              {/* screen 1 — the week board */}
-              <div className="mz__screen mz__week">
-                <p className="mz__head">This week</p>
-                <div className="mz__row"><span className="mz__day">Mon</span> Tomato pasta</div>
-                <div className="mz__row"><span className="mz__day">Tue</span> Veg stir-fry</div>
-                <div className="mz__row mz__row--empty"><span className="mz__day">Wed</span> + Add a meal</div>
-                <div className="mz__row"><span className="mz__day">Thu</span> Bean stew</div>
-              </div>
-              {/* screen 2 — the trip */}
-              <div className="mz__screen mz__trip">
-                <p className="mz__head">Saturday trip</p>
-                <div className="mz__item"><span className="mz__box" /> Rice <b>2 kg</b></div>
-                <div className="mz__item"><span className="mz__box" /> Tomatoes <b>8</b></div>
-                <div className="mz__item mz__item--done"><span className="mz__box mz__box--on" /> Eggs <b>12</b></div>
-                <div className="mz__item"><span className="mz__box" /> Pasta <b>2 pk</b></div>
-              </div>
-              {/* screen 3 — pantry synced */}
-              <div className="mz__screen mz__pantry">
-                <p className="mz__head">Pantry</p>
-                <div className="mz__item mz__item--done"><span className="mz__tick">✓</span> Rice <b>2 kg</b></div>
-                <div className="mz__item mz__item--done"><span className="mz__tick">✓</span> Eggs <b>12</b></div>
-                <div className="mz__item mz__item--done"><span className="mz__tick">✓</span> Pasta <b>2 pk</b></div>
-                <div className="mz__sync">
-                  <span className="mz__avatars" aria-hidden="true"><i /><i /><i /></span>
-                  Synced for the household
-                </div>
-              </div>
-            </div>
-          </Phone>
-        </div>
-      </div>
-    </div>
-  )
-}
 
 /* Sampuli: the product generates values, so the page does too — live. */
 const rnd = (n) => Math.floor(Math.random() * n)
@@ -636,7 +559,12 @@ function MezaniTiles() {
 }
 
 const TILES = { zaamu: ZaamuTiles, pesascope: PesaTiles, sampuli: SampuliTiles, mezani: MezaniTiles }
-const STORIES = { zaamu: ZaamuStory, pesascope: PesaStory, sampuli: SampuliLive, mezani: MezaniStory }
+const STORIES = {
+  zaamu: () => <ShotStory captions={ZAAMU_CAPTIONS} images={ZAAMU_SHOTS} alt="The real Zaamu booking flow" />,
+  pesascope: PesaStory,
+  sampuli: SampuliLive,
+  mezani: () => <ShotStory captions={MEZANI_CAPTIONS} images={MEZANI_SHOTS} alt="The real Mezani app" />,
+}
 
 /* ------------------------------------------------------------------ *
  * Chapter
