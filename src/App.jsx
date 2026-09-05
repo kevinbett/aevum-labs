@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 /* ------------------------------------------------------------------ *
  * Content
@@ -51,6 +51,7 @@ const PRODUCTS = [
     glow: 'rgba(99, 102, 241, 0.26)',
     screenBg: '#f3f5f3',
     eyebrow: 'Test data · in the browser and on npm',
+    flag: 'New · on npm',
     headline: ['Synthetic data that', 'passes every check.'],
     sub: 'Format-true synthetic test data — 52 country packs, in the browser or one npm install — belonging to no real person.',
     shots: { desktop: '/shots/sampuli-desktop', mobile: '/shots/sampuli-mobile.webp' },
@@ -266,6 +267,102 @@ const MEZANI_CAPTIONS = [
 ]
 
 /* ------------------------------------------------------------------ *
+ * Sampuli terminal — types the install, then calls the real package.
+ * Pure CSS/JS (no GIF): crisp on retina, ~2KB, pauses off-screen,
+ * static for reduced-motion.
+ * ------------------------------------------------------------------ */
+
+const TERM_SCRIPT = [
+  { t: 'cmd', text: 'npm install @sampuli/data' },
+  { t: 'out', text: 'added 1 package in 812ms' },
+  { t: 'cmd', text: 'node' },
+  { t: 'repl', text: "const { generate, generateMany } = require('@sampuli/data')" },
+  { t: 'repl', text: "generate('ke.phone')" },
+  { t: 'out', text: "'0712 345 678'" },
+  { t: 'repl', text: "generate('ke.kra_pin')" },
+  { t: 'out', text: "'A012345678Z'" },
+  { t: 'repl', text: "generateMany('ke.person', 100)" },
+  { t: 'out', text: "[ { name: 'Amina Kosgei', phone: '0733 219 480', … }, … 99 more ]" },
+]
+const PROMPT = { cmd: '$', repl: '>', out: '' }
+
+function SampuliTerminal() {
+  const ref = useRef(null)
+  const [pos, setPos] = useState({ line: 0, chars: 0 })
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setPos({ line: TERM_SCRIPT.length, chars: 0 })
+      return
+    }
+    let timer = null
+    let state = { line: 0, chars: 0 }
+    const tick = () => {
+      const cur = TERM_SCRIPT[state.line]
+      if (!cur) {
+        // full script shown — hold, then loop
+        timer = setTimeout(() => { state = { line: 0, chars: 0 }; setPos(state); timer = setTimeout(tick, 500) }, 4200)
+        return
+      }
+      if (cur.t === 'out') {
+        state = { line: state.line + 1, chars: 0 }
+        setPos(state)
+        timer = setTimeout(tick, 420)
+        return
+      }
+      if (state.chars < cur.text.length) {
+        state = { line: state.line, chars: state.chars + 1 }
+        setPos(state)
+        timer = setTimeout(tick, 26)
+      } else {
+        state = { line: state.line + 1, chars: 0 }
+        setPos(state)
+        timer = setTimeout(tick, 380)
+      }
+    }
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && !timer) timer = setTimeout(tick, 400)
+      else if (!e.isIntersecting && timer) { clearTimeout(timer); timer = null }
+    }, { threshold: 0.35 })
+    io.observe(el)
+    return () => { io.disconnect(); if (timer) clearTimeout(timer) }
+  }, [])
+
+  return (
+    <div className="term" ref={ref} data-reveal aria-label="Terminal demo of installing and using @sampuli/data">
+      <div className="term__bar" aria-hidden="true"><i /><i /><i /><span>~/your-project</span></div>
+      <div className="term__body">
+        {TERM_SCRIPT.slice(0, pos.line + 1).map((l, i) => {
+          const typing = i === pos.line
+          if (typing && l.t === 'out') return null
+          const text = typing ? l.text.slice(0, pos.chars) : l.text
+          if (typing && text.length === 0 && l.t !== 'out') {
+            return (
+              <p key={i} className={`term__line term__line--${l.t}`}>
+                <span className="term__prompt">{PROMPT[l.t]}</span><span className="term__cursor" />
+              </p>
+            )
+          }
+          return (
+            <p key={i} className={`term__line term__line--${l.t}`}>
+              {PROMPT[l.t] && <span className="term__prompt">{PROMPT[l.t]}</span>}
+              {text}
+              {typing && <span className="term__cursor" />}
+            </p>
+          )
+        })}
+        {pos.line >= TERM_SCRIPT.length && (
+          <p className="term__line term__line--cmd"><span className="term__prompt">&gt;</span><span className="term__cursor" /></p>
+        )}
+      </div>
+    </div>
+  )
+}
+
+const EXTRAS = { sampuli: SampuliTerminal }
+
+/* ------------------------------------------------------------------ *
  * Tiles — a real thing in every tile: a measurement or working UI
  * ------------------------------------------------------------------ */
 
@@ -444,6 +541,7 @@ const STORIES = {
 function Chapter({ p }) {
   const Tiles = TILES[p.id]
   const Story = STORIES[p.id]
+  const Extra = EXTRAS[p.id]
   const style = { '--c1': p.c1, '--c2': p.c2, '--deep': p.deep, '--glow': p.glow, '--screen-bg': p.screenBg }
   return (
     <section id={p.id} className={`chapter chapter--${p.tone}`} style={style}>
@@ -453,6 +551,7 @@ function Chapter({ p }) {
           <p className="chapter__pill">
             <span className="chapter__dot" aria-hidden="true" />
             {p.name}
+            {p.flag && <span className="chapter__flag">{p.flag}</span>}
             <span className="chapter__cat">{p.eyebrow}</span>
           </p>
           <h2 className="chapter__title">
@@ -476,6 +575,7 @@ function Chapter({ p }) {
       <Story />
 
       <div className="chapter__inner">
+        {Extra && <Extra />}
         <Tiles />
       </div>
     </section>
@@ -493,23 +593,6 @@ export default function App() {
   return (
     <div id="top" className="page">
       <Nav />
-
-      {/* Launch ribbon — the current announcement from the lab */}
-      <a
-        className="ribbon"
-        href="https://www.npmjs.com/package/@sampuli/data"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <span className="ribbon__new">New</span>
-        <span className="ribbon__long">
-          <code>@sampuli/data</code> is live on npm — 52 country packs of format-true test data, free
-        </span>
-        <span className="ribbon__short">
-          <code>@sampuli/data</code> is live on npm
-        </span>
-        <Arrow />
-      </a>
 
       {/* HERO */}
       <section className="hero">
