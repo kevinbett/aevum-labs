@@ -608,6 +608,87 @@ html.js [data-reveal].is-visible {
   border-radius: 999px;
 }
 
+/* Mezani story screens — soft cream cards, calm and pantry-true */
+.mz { position: absolute; inset: 0; font-family: var(--body); }
+.mz__screen {
+  position: absolute;
+  inset: 0;
+  padding: 16% 9% 8%;
+  background: #fbf7f0;
+  color: #43302b;
+  opacity: 0;
+  transform: translateX(24px);
+  transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
+}
+.mz[data-step='0'] .mz__week,
+.mz[data-step='1'] .mz__trip,
+.mz[data-step='2'] .mz__pantry { opacity: 1; transform: none; }
+.mz__head { font-size: 9px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: #b08d6a; margin-bottom: 12px; }
+.mz__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 9px 10px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(67, 48, 43, 0.08);
+  margin-bottom: 7px;
+}
+.mz__row--empty { background: transparent; box-shadow: none; border: 1.5px dashed #dccbb4; color: #b08d6a; }
+.mz__day {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #b08d6a;
+  width: 26px;
+  flex: none;
+}
+.mz__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 9px 10px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(67, 48, 43, 0.08);
+  margin-bottom: 7px;
+}
+.mz__item b { margin-left: auto; font-variant-numeric: tabular-nums; }
+.mz__item--done { color: #8a7566; }
+.mz__box {
+  width: 13px; height: 13px;
+  border-radius: 4px;
+  border: 1.5px solid #dccbb4;
+  flex: none;
+}
+.mz__box--on { background: #8a5a1c; border-color: #8a5a1c; }
+.mz__tick { color: #4d7c0f; font-weight: 700; }
+.mz__sync {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #8a5a1c;
+  margin-top: 12px;
+}
+.mz__avatars { display: inline-flex; }
+.mz__avatars i {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid #fbf7f0;
+  background: linear-gradient(135deg, #e8b04b, #c07a3a);
+  margin-left: -4px;
+}
+.mz__avatars i:first-child { margin-left: 0; }
+.mz__avatars i:nth-child(2) { background: linear-gradient(135deg, #a8c66c, #6d9e4f); }
+.mz__avatars i:nth-child(3) { background: linear-gradient(135deg, #fb7185, #e11d48); }
+
 /* PesaScope scene */
 .ps {
   position: relative;
@@ -819,6 +900,27 @@ html.js [data-reveal].is-visible {
 }
 .demo__q { font-family: var(--mono); font-size: 13px; font-weight: 600; margin-bottom: 6px; }
 .demo__r { font-size: 12px; color: var(--text-l2); font-variant-numeric: tabular-nums; }
+.demo__invite {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 14px;
+  border-radius: 14px;
+  background: #fbf7f0;
+  color: #43302b;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.demo__invite p { flex: 1; }
+.demo__accept {
+  flex: none;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--deep);
+  border-radius: 999px;
+  padding: 6px 14px;
+}
 .demo__card {
   padding: 14px;
   border-radius: 14px;

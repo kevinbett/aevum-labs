@@ -9,6 +9,7 @@ const SITES = [
   { id: 'zaamu', url: 'https://zaamu.com' },
   { id: 'pesascope', url: 'https://pesascope.site' },
   { id: 'sampuli', url: 'https://sampuli.site' },
+  { id: 'mezani', url: 'https://mezani.health' },
 ];
 
 (async () => {

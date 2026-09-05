@@ -28,7 +28,7 @@ const PUB = path.join(__dirname, '..', 'public');
     return Buffer.from(dataUrl.split(',')[1], 'base64');
   };
 
-  for (const id of ['zaamu', 'pesascope', 'sampuli']) {
+  for (const id of ['zaamu', 'pesascope', 'sampuli', 'mezani']) {
     fs.writeFileSync(path.join(SHOTS, `${id}-desktop-1440.webp`), await encode(`${id}-desktop.jpg`, 1440, 0.82));
     fs.writeFileSync(path.join(SHOTS, `${id}-desktop-2880.webp`), await encode(`${id}-desktop.jpg`, null, 0.78));
     fs.writeFileSync(path.join(SHOTS, `${id}-mobile.webp`), await encode(`${id}-mobile.jpg`, null, 0.82));
