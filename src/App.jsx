@@ -358,11 +358,17 @@ function SampuliTiles() {
         <p className="tile__body">Nairobi to Singapore — each market researched and checksum-verified before it ships, omitted rather than guessed.</p>
       </article>
       <article className="tile" data-reveal>
-        <div className="demo">
+        <a
+          className="demo"
+          href="https://www.npmjs.com/package/@sampuli/data"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="@sampuli/data on npm"
+        >
           <div className="demo__npm">
             <p><span className="demo__prompt">$</span> npm install @sampuli/data</p>
           </div>
-        </div>
+        </a>
         <h3 className="tile__title">One install, every pack</h3>
         <p className="tile__body">The same engine as an npm package — all 52 countries in your tests and CI. Free, MIT, zero dependencies.</p>
       </article>
@@ -487,6 +493,23 @@ export default function App() {
   return (
     <div id="top" className="page">
       <Nav />
+
+      {/* Launch ribbon — the current announcement from the lab */}
+      <a
+        className="ribbon"
+        href="https://www.npmjs.com/package/@sampuli/data"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span className="ribbon__new">New</span>
+        <span className="ribbon__long">
+          <code>@sampuli/data</code> is live on npm — 52 country packs of format-true test data, free
+        </span>
+        <span className="ribbon__short">
+          <code>@sampuli/data</code> is live on npm
+        </span>
+        <Arrow />
+      </a>
 
       {/* HERO */}
       <section className="hero">
