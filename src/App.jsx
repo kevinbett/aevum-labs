@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 /* ------------------------------------------------------------------ *
  * Content
@@ -108,41 +108,6 @@ function useReveal() {
   }, [])
 }
 
-/** Scroll-scrubbed step index over a tall container: deterministic and reversible. */
-function useScrub(steps) {
-  const ref = useRef(null)
-  const [idx, setIdx] = useState(0)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setIdx(steps - 1)
-      return
-    }
-    let raf = 0
-    const onScroll = () => {
-      cancelAnimationFrame(raf)
-      raf = requestAnimationFrame(() => {
-        const rect = el.getBoundingClientRect()
-        const total = rect.height - window.innerHeight
-        if (total <= 0) return
-        const p = Math.min(1, Math.max(0, -rect.top / total))
-        el.style.setProperty('--p', p.toFixed(4))
-        setIdx(Math.min(steps - 1, Math.floor(p * steps)))
-      })
-    }
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
-    return () => {
-      cancelAnimationFrame(raf)
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-    }
-  }, [steps])
-  return [ref, idx]
-}
-
 /* ------------------------------------------------------------------ *
  * Shared pieces
  * ------------------------------------------------------------------ */
@@ -249,32 +214,24 @@ function Phone({ src, alt, children, className = '' }) {
  * Product stories — one shape per product, scrubbed by scroll
  * ------------------------------------------------------------------ */
 
-/* A story told with REAL screens: three captures of the live product,
-   stacked and eagerly loaded so step changes never wait on the network. */
-function ShotStory({ captions, images, alt }) {
-  const [ref, idx] = useScrub(captions.length)
+/* The journey as a film strip of REAL screens: every step visible at once
+   on desktop; a native scroll-snap carousel on mobile. The page itself
+   always scrolls normally — nothing pins, nothing can feel stuck. */
+function Journey({ captions, images, alt }) {
   return (
-    <div className="story" ref={ref} style={{ '--steps': captions.length }}>
-      <div className="story__sticky">
-        <div className="story__grid">
-          <div className="story__captions">
-            {captions.map((c, i) => (
-              <div key={c.title} className={`story__caption ${i === idx ? 'is-on' : ''}`} aria-hidden={i !== idx}>
-                <p className="story__step">{i + 1} / {captions.length}</p>
-                <h3>{c.title}</h3>
-                <p className="story__body">{c.body}</p>
-              </div>
-            ))}
-          </div>
-          <Phone className="phone--story">
-            <div className="shots" data-step={idx}>
-              {images.map((src, i) => (
-                <img key={src} src={src} alt={`${alt} — step ${i + 1}`} loading="eager" decoding="async" />
-              ))}
-            </div>
+    <div className="journey" role="list">
+      {captions.map((c, i) => (
+        <figure className="journey__step" role="listitem" key={c.title} data-reveal style={{ transitionDelay: `${i * 90}ms` }}>
+          <Phone className="phone--journey">
+            <img src={images[i]} alt={`${alt} — step ${i + 1}`} loading="lazy" decoding="async" />
           </Phone>
-        </div>
-      </div>
+          <figcaption className="journey__caption">
+            <p className="journey__num">{i + 1}</p>
+            <h3>{c.title}</h3>
+            <p className="journey__body">{c.body}</p>
+          </figcaption>
+        </figure>
+      ))}
     </div>
   )
 }
@@ -464,10 +421,10 @@ function MezaniTiles() {
 
 const TILES = { zaamu: ZaamuTiles, pesascope: PesaTiles, sampuli: SampuliTiles, mezani: MezaniTiles }
 const STORIES = {
-  zaamu: () => <ShotStory captions={ZAAMU_CAPTIONS} images={ZAAMU_SHOTS} alt="The real Zaamu booking flow" />,
-  pesascope: () => <ShotStory captions={PESA_CAPTIONS} images={PESA_SHOTS} alt="The real PesaScope dashboard (sample statement)" />,
-  sampuli: () => <ShotStory captions={SAMPULI_CAPTIONS} images={SAMPULI_SHOTS} alt="The real Sampuli generator" />,
-  mezani: () => <ShotStory captions={MEZANI_CAPTIONS} images={MEZANI_SHOTS} alt="The real Mezani app" />,
+  zaamu: () => <Journey captions={ZAAMU_CAPTIONS} images={ZAAMU_SHOTS} alt="The real Zaamu booking flow" />,
+  pesascope: () => <Journey captions={PESA_CAPTIONS} images={PESA_SHOTS} alt="The real PesaScope dashboard (sample statement)" />,
+  sampuli: () => <Journey captions={SAMPULI_CAPTIONS} images={SAMPULI_SHOTS} alt="The real Sampuli generator" />,
+  mezani: () => <Journey captions={MEZANI_CAPTIONS} images={MEZANI_SHOTS} alt="The real Mezani app" />,
 }
 
 /* ------------------------------------------------------------------ *
