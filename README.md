@@ -58,7 +58,9 @@ phone frame's aspect ratio or the image gets cropped). When a product's landing 
 changes materially:
 
 ```bash
-node scripts/capture-shots.cjs   # JPG intermediates (needs Playwright via NODE_PATH)
+node scripts/capture-shots.cjs        # landing-page JPG intermediates (Playwright via NODE_PATH)
+node scripts/capture-booking.cjs      # real Zaamu booking journey (test tenant, read-only)
+node scripts/capture-mezani-demo.cjs  # real Mezani app via its public guest demo
 npm run dev                      # make-assets encodes through the dev server
 node scripts/make-assets.cjs     # WebP files + og.jpg
 ```

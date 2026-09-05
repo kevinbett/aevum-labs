@@ -80,21 +80,19 @@ h1, h2, h3 { text-wrap: balance; }
 html.js [data-reveal] {
   opacity: 0;
   transform: translateY(26px);
-  filter: blur(6px);
-  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease), filter 0.9s var(--ease);
+  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
 }
 html.js [data-reveal].is-visible {
   opacity: 1;
   transform: none;
-  filter: none;
 }
 .hero-anim {
   display: inline-block;
   animation: rise 1s var(--ease) both;
 }
 @keyframes rise {
-  from { opacity: 0; transform: translateY(22px); filter: blur(8px); }
-  to { opacity: 1; transform: none; filter: none; }
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: none; }
 }
 
 /* ---------- buttons ---------- */
@@ -297,7 +295,6 @@ html.js [data-reveal].is-visible {
   height: 900px;
   transform: translateX(-50%);
   background: radial-gradient(closest-side, var(--glow), transparent 75%);
-  filter: blur(40px);
   pointer-events: none;
 }
 .chapter__inner {
@@ -482,7 +479,7 @@ html.js [data-reveal].is-visible {
 /* ---------- scroll-scrubbed stories ---------- */
 .story {
   position: relative;
-  height: calc(var(--steps, 3) * 95vh);
+  height: calc(var(--steps, 3) * 80vh);
 }
 .story__sticky {
   position: sticky;
@@ -515,7 +512,8 @@ html.js [data-reveal].is-visible {
   justify-content: center;
   opacity: 0;
   transform: translateY(14px);
-  transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
+  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
+  will-change: opacity, transform;
   pointer-events: none;
 }
 .story__caption.is-on { opacity: 1; transform: none; }
@@ -547,147 +545,23 @@ html.js [data-reveal].is-visible {
   min-width: 0;
   flex: none;
 }
-.zs { position: absolute; inset: 0; font-family: var(--body); }
-.zs__screen {
+/* real product screens inside the story phone */
+.shots { position: absolute; inset: 0; }
+.shots img {
   position: absolute;
-  inset: 0;
-  padding: 16% 9% 8%;
-  background: #faf6ef;
-  color: #3d2b1f;
+  inset: 8% 0 0 0; /* below the island, like the stage phone */
+  width: 100%;
+  height: 92%;
+  object-fit: cover;
+  object-position: top;
   opacity: 0;
-  transform: translateX(24px);
-  transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
+  transform: translateX(18px);
+  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
+  will-change: opacity, transform;
 }
-.zs[data-step='0'] .zs__services,
-.zs[data-step='1'] .zs__slots,
-.zs[data-step='2'] .zs__done { opacity: 1; transform: none; }
-.zs__head { font-size: 9px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: #a08469; margin-bottom: 12px; }
-.zs__label { font-size: 10px; font-weight: 600; color: #a08469; margin: 10px 0 6px; }
-.zs__row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 11.5px;
-  font-weight: 600;
-  padding: 9px 10px;
-  border-radius: 10px;
-  background: #fff;
-  box-shadow: 0 1px 2px rgba(61, 43, 31, 0.08);
-  margin-bottom: 7px;
-}
-.zs__row span { font-weight: 700; }
-.zs__row--sel { background: #7a3d12; color: #fff; }
-.zs__chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.zs__chip {
-  font-size: 10.5px;
-  font-weight: 600;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: #fff;
-  box-shadow: 0 1px 2px rgba(61, 43, 31, 0.08);
-}
-.zs__chip--sel { background: #7a3d12; color: #fff; }
-.zs__done { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-.zs__check {
-  width: 44px; height: 44px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: #7a3d12;
-  color: #fff;
-  margin-bottom: 12px;
-}
-.zs__big { font-size: 14px; font-weight: 700; }
-.zs__meta { font-size: 11px; color: #a08469; margin: 4px 0 12px; }
-.zs__wa {
-  font-size: 10px;
-  font-weight: 600;
-  color: #075e54;
-  background: #d9fdd3;
-  padding: 6px 10px;
-  border-radius: 999px;
-}
-
-/* Mezani story screens — soft cream cards, calm and pantry-true */
-.mz { position: absolute; inset: 0; font-family: var(--body); }
-.mz__screen {
-  position: absolute;
-  inset: 0;
-  padding: 16% 9% 8%;
-  background: #fbf7f0;
-  color: #43302b;
-  opacity: 0;
-  transform: translateX(24px);
-  transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
-}
-.mz[data-step='0'] .mz__week,
-.mz[data-step='1'] .mz__trip,
-.mz[data-step='2'] .mz__pantry { opacity: 1; transform: none; }
-.mz__head { font-size: 9px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: #b08d6a; margin-bottom: 12px; }
-.mz__row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11.5px;
-  font-weight: 600;
-  padding: 9px 10px;
-  border-radius: 10px;
-  background: #fff;
-  box-shadow: 0 1px 2px rgba(67, 48, 43, 0.08);
-  margin-bottom: 7px;
-}
-.mz__row--empty { background: transparent; box-shadow: none; border: 1.5px dashed #dccbb4; color: #b08d6a; }
-.mz__day {
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  color: #b08d6a;
-  width: 26px;
-  flex: none;
-}
-.mz__item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11.5px;
-  font-weight: 600;
-  padding: 9px 10px;
-  border-radius: 10px;
-  background: #fff;
-  box-shadow: 0 1px 2px rgba(67, 48, 43, 0.08);
-  margin-bottom: 7px;
-}
-.mz__item b { margin-left: auto; font-variant-numeric: tabular-nums; }
-.mz__item--done { color: #8a7566; }
-.mz__box {
-  width: 13px; height: 13px;
-  border-radius: 4px;
-  border: 1.5px solid #dccbb4;
-  flex: none;
-}
-.mz__box--on { background: #8a5a1c; border-color: #8a5a1c; }
-.mz__tick { color: #4d7c0f; font-weight: 700; }
-.mz__sync {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-size: 10px;
-  font-weight: 600;
-  color: #8a5a1c;
-  margin-top: 12px;
-}
-.mz__avatars { display: inline-flex; }
-.mz__avatars i {
-  width: 14px; height: 14px;
-  border-radius: 50%;
-  border: 1.5px solid #fbf7f0;
-  background: linear-gradient(135deg, #e8b04b, #c07a3a);
-  margin-left: -4px;
-}
-.mz__avatars i:first-child { margin-left: 0; }
-.mz__avatars i:nth-child(2) { background: linear-gradient(135deg, #a8c66c, #6d9e4f); }
-.mz__avatars i:nth-child(3) { background: linear-gradient(135deg, #fb7185, #e11d48); }
+.shots[data-step='0'] img:nth-of-type(1),
+.shots[data-step='1'] img:nth-of-type(2),
+.shots[data-step='2'] img:nth-of-type(3) { opacity: 1; transform: none; }
 
 /* PesaScope scene */
 .ps {
@@ -978,7 +852,6 @@ html.js [data-reveal].is-visible {
   height: 700px;
   transform: translateX(-50%);
   background: radial-gradient(closest-side, rgba(255, 106, 61, 0.18), transparent 75%);
-  filter: blur(40px);
   pointer-events: none;
 }
 .contact__inner { position: relative; max-width: 900px; margin: 0 auto; }
@@ -1051,7 +924,7 @@ html.js [data-reveal].is-visible {
     max-width: 300px;
     margin: 0 auto;
   }
-  .story { height: calc(var(--steps, 3) * 110vh); }
+  .story { height: calc(var(--steps, 3) * 92vh); }
   .story__grid,
   .story__grid--flip { grid-template-columns: 1fr; gap: 26px; justify-items: center; text-align: center; }
   .story__grid--flip .ps { order: -1; }
