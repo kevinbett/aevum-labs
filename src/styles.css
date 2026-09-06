@@ -736,6 +736,7 @@ html.js [data-reveal].is-visible {
   white-space: nowrap;
 }
 .demo__prompt { color: var(--deep); margin-right: 8px; }
+.demo__npm--wrap { white-space: pre-wrap; word-break: break-all; line-height: 1.6; }
 .chapter--light .demo__npm { box-shadow: 0 10px 26px -16px rgba(0, 0, 0, 0.5); }
 .demo__card {
   padding: 14px;
