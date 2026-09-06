@@ -272,7 +272,7 @@ const MEZANI_CAPTIONS = [
  * static for reduced-motion.
  * ------------------------------------------------------------------ */
 
-const TERM_SCRIPT = [
+const NPM_SCRIPT = [
   { t: 'cmd', text: 'npm install @sampuli/data' },
   { t: 'out', text: 'added 1 package in 812ms' },
   { t: 'cmd', text: 'node' },
@@ -284,22 +284,31 @@ const TERM_SCRIPT = [
   { t: 'repl', text: "generateMany('jp.person', 100)" },
   { t: 'out', text: "[ { name: 'Suzuki Yusuke', phone: '090-7937-4683', … }, … 99 more ]" },
 ]
+const API_SCRIPT = [
+  { t: 'cmd', text: 'curl sampuli.site/api/v1/de/account' },
+  { t: 'out', text: '"DE24100110017692939111"' },
+  { t: 'cmd', text: 'curl "sampuli.site/api/v1/batch?specs=ng.phone,ke.person:3,de.company"' },
+  { t: 'out', text: '{ "count": 3, "results": [' },
+  { t: 'out', text: '  { "spec": "ng.phone",   "data": "09133171420" },' },
+  { t: 'out', text: '  { "spec": "ke.person",  "data": [ { "name": "Winnie Wanyama", … }, … ] },' },
+  { t: 'out', text: '  { "spec": "de.company", "data": { "name": "Iron Solutions GmbH", … } } ] }' },
+]
 const PROMPT = { cmd: '$', repl: '>', out: '' }
 
-function SampuliTerminal() {
+function Terminal({ script, title, endPrompt }) {
   const ref = useRef(null)
   const [pos, setPos] = useState({ line: 0, chars: 0 })
   useEffect(() => {
     const el = ref.current
     if (!el) return
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setPos({ line: TERM_SCRIPT.length, chars: 0 })
+      setPos({ line: script.length, chars: 0 })
       return
     }
     let timer = null
     let state = { line: 0, chars: 0 }
     const tick = () => {
-      const cur = TERM_SCRIPT[state.line]
+      const cur = script[state.line]
       if (!cur) {
         // full script shown — hold, then loop
         timer = setTimeout(() => { state = { line: 0, chars: 0 }; setPos(state); timer = setTimeout(tick, 500) }, 4200)
@@ -327,13 +336,13 @@ function SampuliTerminal() {
     }, { threshold: 0.35 })
     io.observe(el)
     return () => { io.disconnect(); if (timer) clearTimeout(timer) }
-  }, [])
+  }, [script])
 
   return (
-    <div className="term" ref={ref} data-reveal aria-label="Terminal demo of installing and using @sampuli/data">
-      <div className="term__bar" aria-hidden="true"><i /><i /><i /><span>~/your-project</span></div>
+    <div className="term" ref={ref} data-reveal aria-label={`Terminal demo: ${title}`}>
+      <div className="term__bar" aria-hidden="true"><i /><i /><i /><span>{title}</span></div>
       <div className="term__body">
-        {TERM_SCRIPT.slice(0, pos.line + 1).map((l, i) => {
+        {script.slice(0, pos.line + 1).map((l, i) => {
           const typing = i === pos.line
           if (typing && l.t === 'out') return null
           const text = typing ? l.text.slice(0, pos.chars) : l.text
@@ -352,15 +361,24 @@ function SampuliTerminal() {
             </p>
           )
         })}
-        {pos.line >= TERM_SCRIPT.length && (
-          <p className="term__line term__line--cmd"><span className="term__prompt">&gt;</span><span className="term__cursor" /></p>
+        {pos.line >= script.length && (
+          <p className="term__line term__line--cmd"><span className="term__prompt">{endPrompt}</span><span className="term__cursor" /></p>
         )}
       </div>
     </div>
   )
 }
 
-const EXTRAS = { sampuli: SampuliTerminal }
+function SampuliTerminals() {
+  return (
+    <div className="term-duo">
+      <Terminal script={NPM_SCRIPT} title="~/your-project" endPrompt=">" />
+      <Terminal script={API_SCRIPT} title="sampuli.site/api" endPrompt="$" />
+    </div>
+  )
+}
+
+const EXTRAS = { sampuli: SampuliTerminals }
 
 /* ------------------------------------------------------------------ *
  * Tiles — a real thing in every tile: a measurement or working UI
