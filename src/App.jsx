@@ -50,10 +50,10 @@ const PRODUCTS = [
     deep: '#4F46E5',
     glow: 'rgba(99, 102, 241, 0.26)',
     screenBg: '#f3f5f3',
-    eyebrow: 'Test data · in the browser and on npm',
-    flag: 'New · on npm',
+    eyebrow: 'Test data · browser, npm and API',
+    flag: 'New · npm + API',
     headline: ['Synthetic data that', 'passes every check.'],
-    sub: 'Format-true synthetic test data — 52 country packs, in the browser or one npm install — belonging to no real person.',
+    sub: 'Format-true synthetic test data — 90 country packs, in the browser, one npm install or one HTTP call — belonging to no real person.',
     shots: { desktop: '/shots/sampuli-desktop', mobile: '/shots/sampuli-mobile.webp' },
   },
   {
@@ -450,7 +450,7 @@ function SampuliTiles() {
   return (
     <div className="bento">
       <article className="tile" data-reveal>
-        <p className="tile__big">52</p>
+        <p className="tile__big">90</p>
         <h3 className="tile__title">Country packs, six continents</h3>
         <p className="tile__body">Each market researched and checksum-verified before it ships — omitted rather than guessed.</p>
       </article>
@@ -467,20 +467,25 @@ function SampuliTiles() {
           </div>
         </a>
         <h3 className="tile__title">One install, every pack</h3>
-        <p className="tile__body">The same engine as an npm package — all 52 countries in your tests and CI. Free, MIT, zero dependencies.</p>
+        <p className="tile__body">The same engine as an npm package — all 90 countries in your tests and CI. Free, MIT, zero dependencies.</p>
       </article>
       <article className="tile" data-reveal>
-        <div className="demo">
-          <div className="demo__card">
-            <p className="demo__pan">4048 8912 3456 7893</p>
-            <p className="demo__ok">✓ Passes the Luhn check · belongs to no one</p>
+        <a
+          className="demo"
+          href="https://sampuli.site/api"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Sampuli REST API docs"
+        >
+          <div className="demo__npm">
+            <p><span className="demo__prompt">$</span> curl sampuli.site/api/v1/de/account</p>
           </div>
-        </div>
-        <h3 className="tile__title">Real formats, no real people</h3>
-        <p className="tile__body">Everything is entirely synthetic, generated on your machine and format-checked. Nothing is collected or stored.</p>
+        </a>
+        <h3 className="tile__title">Or just a URL</h3>
+        <p className="tile__body">A free REST API — no key, no signup, CORS-open. The same engine for Postman, pipelines and every non-JS stack.</p>
       </article>
       <article className="tile" data-reveal>
-        <p className="tile__big">440 tests</p>
+        <p className="tile__big">706 tests</p>
         <h3 className="tile__title">On every release</h3>
         <p className="tile__body">Checksums proven against known vectors, pack contracts and export shapes — green in CI across the app and the package.</p>
       </article>
