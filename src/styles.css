@@ -190,10 +190,17 @@ html.js [data-reveal].is-visible {
   background: linear-gradient(120deg, var(--c1), var(--c2));
 }
 
-/* ---------- animated terminal (Sampuli) ---------- */
-.term {
-  max-width: 680px;
+/* ---------- animated terminals (Sampuli) ---------- */
+.term-duo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  max-width: 1010px;
   margin: 0 auto 72px;
+  padding: 0 22px;
+}
+.term {
+  margin: 0;
   border-radius: 16px;
   background: #0d0e12;
   border: 1px solid rgba(255, 255, 255, 0.09);
@@ -240,8 +247,11 @@ html.js [data-reveal].is-visible {
   animation: term-blink 1.1s steps(2) infinite;
 }
 @keyframes term-blink { 50% { opacity: 0; } }
+@media (max-width: 1024px) {
+  .term-duo { grid-template-columns: 1fr; max-width: 680px; }
+}
 @media (max-width: 720px) {
-  .term { margin-bottom: 52px; }
+  .term-duo { margin-bottom: 52px; gap: 16px; }
   .term__body { min-height: 330px; font-size: 12px; }
 }
 
