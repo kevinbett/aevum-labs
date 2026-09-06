@@ -477,12 +477,12 @@ function SampuliTiles() {
           rel="noopener noreferrer"
           aria-label="Sampuli REST API docs"
         >
-          <div className="demo__npm">
-            <p><span className="demo__prompt">$</span> curl sampuli.site/api/v1/de/account</p>
+          <div className="demo__npm demo__npm--wrap">
+            <p><span className="demo__prompt">$</span> curl sampuli.site/api/v1/batch?specs=ng.phone,ke.person:3,de.company</p>
           </div>
         </a>
         <h3 className="tile__title">Or just a URL</h3>
-        <p className="tile__body">A free REST API — no key, no signup, CORS-open. The same engine for Postman, pipelines and every non-JS stack.</p>
+        <p className="tile__body">A free REST API — no key, CORS-open. Mix countries in one call: a Nigerian phone, three Kenyans, a German company.</p>
       </article>
       <article className="tile" data-reveal>
         <p className="tile__big">706 tests</p>
