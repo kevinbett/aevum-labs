@@ -699,7 +699,7 @@ export default function App() {
             ))}
           </nav>
           <span className="footer__note">
-            No cookies, no trackers — this page collects nothing. · Software made to last · Nairobi, Kenya · © {year}
+            Visits measured with Google Analytics — no ads, nothing sold. · Software made to last · Nairobi, Kenya · © {year}
           </span>
         </div>
       </footer>
