@@ -686,7 +686,7 @@ export default function App() {
             <a href={`mailto:${CONTACT_EMAIL}`} className="btn btn--light">Say hello <Arrow /></a>
             <a href="#zaamu" className="btn btn--outline">Explore the products</a>
           </div>
-          <p className="contact__email">{CONTACT_EMAIL}</p>
+          <p className="contact__email"><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></p>
         </div>
       </section>
 
