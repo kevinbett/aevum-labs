@@ -3,10 +3,10 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Aevum Labs — an independent product studio. Showcase of Zaamu, PesaScope, and Sampuli.",
+  "description": "Aevum Labs \u2014 an independent product studio. Showcase of Zaamu, PesaScope, and Sampuli.",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/prerender.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",
-    "vite": "^5.4.11"
+    "vite": "^5.4.11",
+    "esbuild": "^0.21.5"
   }
 }

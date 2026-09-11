@@ -24,6 +24,73 @@
     <meta name="twitter:description" content="Durable software products, engineered to endure. Zaamu · PesaScope · Sampuli · Mezani." />
     <meta name="twitter:image" content="https://aevumlabs.site/og.jpg" />
 
+    <!-- Structured data for search + AI agents -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://aevumlabs.site/#org",
+          "name": "Aevum Labs",
+          "url": "https://aevumlabs.site/",
+          "email": "support@zaamu.com",
+          "slogan": "Software made to last",
+          "description": "An independent product studio building durable, practical software products \u2014 engineered to endure. Four products are live today: Zaamu, Mezani, Sampuli and PesaScope.",
+          "location": { "@type": "Place", "address": { "@type": "PostalAddress", "addressLocality": "Nairobi", "addressCountry": "KE" } }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://aevumlabs.site/#website",
+          "url": "https://aevumlabs.site/",
+          "name": "Aevum Labs",
+          "publisher": { "@id": "https://aevumlabs.site/#org" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "Zaamu",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Web",
+          "url": "https://zaamu.com",
+          "publisher": { "@id": "https://aevumlabs.site/#org" },
+          "description": "Booking platform for barbershops, salons and spas. Set up in ten minutes, share one link on WhatsApp, and the calendar fills itself \u2014 walk-ins and online in one place.",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KES" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "Mezani",
+          "applicationCategory": "LifestyleApplication",
+          "operatingSystem": "Web, iOS, Android",
+          "url": "https://mezani.health",
+          "publisher": { "@id": "https://aevumlabs.site/#org" },
+          "description": "A calm, pantry-aware meal planner for households: pick the week\u2019s meals, get one shopping list, and keep a pantry the whole household can trust.",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "Sampuli",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "Web",
+          "url": "https://sampuli.site",
+          "publisher": { "@id": "https://aevumlabs.site/#org" },
+          "description": "Format-true synthetic test data for software teams \u2014 90 country packs, usable in the browser, as the npm package @sampuli/data, or via a free REST API. Belongs to no real person.",
+          "sameAs": ["https://www.npmjs.com/package/@sampuli/data", "https://sampuli.site/api"],
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "PesaScope",
+          "applicationCategory": "FinanceApplication",
+          "operatingSystem": "Web",
+          "url": "https://pesascope.site",
+          "publisher": { "@id": "https://aevumlabs.site/#org" },
+          "description": "Turns Safaricom\u2019s password-protected M-Pesa statement into a spending dashboard \u2014 reconciled to the cent, entirely on your device. Nothing is uploaded.",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KES" }
+        }
+      ]
+    }
+    </script>
+
     <!-- Fonts: Inter Tight (display) + Inter (UI/body) — one superfamily, like SF Display/Text -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
