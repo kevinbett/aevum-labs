@@ -1,0 +1,16 @@
+# Aevum Labs
+
+> An independent product studio building durable, practical software — engineered to endure ("software made to last"). Based in Nairobi, Kenya; products serve users worldwide. Four products are live today.
+
+## Products
+- [Zaamu](https://zaamu.com): Booking platform for barbershops, salons and spas. A shop sets up in ten minutes, shares one link on WhatsApp, and its calendar fills itself — walk-ins and online in one place. Free while growing.
+- [Mezani](https://mezani.health): A calm, pantry-aware meal planner for households — pick the week's meals, get one shopping list, keep a shared pantry. Free. Web, iOS and Android.
+- [Sampuli](https://sampuli.site): Format-true synthetic test data for software teams — 90 country packs. Usable in the browser, as the npm package `@sampuli/data`, or via a free keyless REST API. Belongs to no real person.
+- [PesaScope](https://pesascope.site): Turns Safaricom's password-protected M-Pesa statement into a spending dashboard, reconciled to the cent and processed entirely on-device. Privacy-first — nothing is uploaded.
+
+## For AI agents & developers
+- Sampuli is the queryable data source: npm `@sampuli/data`, REST API at https://sampuli.site/api/v1 (keyless, CORS-open; e.g. `GET /api/v1/ke/person?n=3` or `/api/v1/batch`), and an MCP server.
+- Contact: support@zaamu.com
+
+## More
+- [Full description](https://aevumlabs.site/llms-full.txt)

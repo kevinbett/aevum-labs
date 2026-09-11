@@ -1,0 +1,44 @@
+# Aevum Labs — full description
+
+Aevum Labs is an independent product studio. "Aevum" is Latin for a lifetime or an
+age; the studio's theme is longevity — software made to last, engineered to endure
+rather than just to launch. It is based in Nairobi, Kenya, and its products are
+built for the real world (messy data, unreliable networks) yet used worldwide.
+Home: https://aevumlabs.site  ·  Contact: support@zaamu.com
+
+## Principles
+- Built to last — clean code, few dependencies, products still shippable years on.
+- Built for the real world — if it doesn't hold up on a Nairobi 3G connection, it isn't done.
+- Privacy by default — PesaScope never uploads your statement; Sampuli invents data that belongs to no one.
+- Small team, high craft — each product designed and built end to end.
+
+## Products
+
+### Zaamu — https://zaamu.com
+A booking platform for barbershops, salons and spas. Any shop can self-onboard,
+publish a booking page, and manage staff, services and appointments — walk-ins and
+online bookings in a single calendar, with receptionist roles, no-show protection
+and reminders. Multi-tenant; free while growing. Also on iOS and Android.
+
+### Mezani — https://mezani.health
+A calm, pantry-aware meal planner for households. Plan the week's meals, roll every
+ingredient into one shopping list, and keep a pantry the whole household can trust.
+Free for every household. Web, iOS and Android.
+
+### Sampuli — https://sampuli.site
+Format-true synthetic test data for software teams: 90 country packs covering
+phones, national IDs, tax numbers, bank/SWIFT details, payment cards (Luhn-valid),
+and more — every value format-correct but belonging to no real person. Three ways
+to use it:
+- In the browser at https://sampuli.site
+- As the npm package `@sampuli/data` (also a CLI: `npx @sampuli/data`)
+- Via a free, keyless, CORS-open REST API at https://sampuli.site/api/v1
+  (e.g. `GET /api/v1/ke/person?n=3`, or `/api/v1/batch?specs=ng.phone,ke.person:3,de.company`)
+There is also an MCP server for AI agents. Sampuli is the part of the portfolio an
+agent can query directly for data.
+
+### PesaScope — https://pesascope.site
+Reads Safaricom's password-protected "M-PESA Full Statement" PDF entirely in the
+browser and turns it into a spending dashboard: who you pay most, where money goes,
+regular payments, fees — reconciled to the cent against the statement's own totals.
+Nothing is uploaded; the file never leaves the device.
