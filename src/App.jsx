@@ -699,7 +699,7 @@ export default function App() {
             ))}
           </nav>
           <span className="footer__note">
-            Visits measured with Google Analytics — no ads, nothing sold. · Software made to last · Nairobi, Kenya · © {year}
+            Visits measured with Google Analytics and Microsoft Clarity — no ads, nothing sold. · Software made to last · Nairobi, Kenya · © {year}
           </span>
         </div>
       </footer>
