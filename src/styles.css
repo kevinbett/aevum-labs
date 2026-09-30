@@ -974,13 +974,19 @@ html.js [data-reveal].is-visible {
   }
   .journey {
     display: flex;
+    /* sideways only: overflow-x:auto alone makes overflow-y compute to auto too,
+       and the reveal's translateY then gave the strip a vertical scroll range —
+       a vertical drag on a phone scrolled the strip (phone sliding up inside a
+       clipped window) instead of the page. Lock the axis so the page scrolls. */
     overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     gap: 18px;
-    padding: 0 24px 8px;
-    margin-bottom: 64px;
+    padding: 0 24px 30px; /* room for the steps' 26px rise-in, so nothing clips while revealing */
+    margin-bottom: 42px;
   }
   .journey::-webkit-scrollbar { display: none; }
   .journey__step { flex: 0 0 74%; max-width: 300px; scroll-snap-align: center; }
