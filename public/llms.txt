@@ -1,8 +1,9 @@
 # Aevum Labs
 
-> An independent product studio building durable, practical software — engineered to endure ("software made to last"). Based in Nairobi, Kenya; products serve users worldwide. Four products are live today.
+> An independent product studio building durable, practical software — engineered to endure ("software made to last"). Based in Nairobi, Kenya; products serve users worldwide. Five products are live today; the newest is Kikao.
 
 ## Products
+- [Kikao](https://kikao.site): Operations for building contractors — approvals, attendance and payments in one place. Requests raised on site (materials, orders, floats, leave, payments) are decided from the office or the phone, attendance becomes the M-Pesa bulk wage file, and every step is sealed into a hash-chained, append-only audit trail. Kikao never moves money; finance records each payment against its approval.
 - [Zaamu](https://zaamu.com): Booking platform for barbershops, salons and spas. A shop sets up in ten minutes, shares one link on WhatsApp, and its calendar fills itself — walk-ins and online in one place. Free while growing.
 - [Mezani](https://mezani.health): A calm, pantry-aware meal planner for households — pick the week's meals, get one shopping list, keep a shared pantry. Free. Web, iOS and Android.
 - [Sampuli](https://sampuli.site): Format-true synthetic test data for software teams — 90 country packs. Usable in the browser, as the npm package `@sampuli/data`, or via a free keyless REST API. Belongs to no real person.

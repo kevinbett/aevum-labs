@@ -8,6 +8,27 @@ const CONTACT_EMAIL = 'support@zaamu.com'
 
 const PRODUCTS = [
   {
+    // The flagship: first chapter, on its own deep-teal ground (Kikao's brand),
+    // so it reads apart from both the black hero and PesaScope's emerald.
+    id: 'kikao',
+    name: 'Kikao',
+    domain: 'kikao.site',
+    url: 'https://kikao.site',
+    tone: 'dark',
+    ground: 'radial-gradient(ellipse 130% 60% at 50% 0%, #11504a 0%, #0c3936 48%, #082725 100%)',
+    c1: '#A7EFE1',
+    c2: '#2DD4BF',
+    deep: '#134E4A',
+    numInk: '#0c3936', // mint is too light for white numerals — dark ink, like Kikao's own buttons
+    glow: 'rgba(167, 239, 225, 0.18)',
+    screenBg: '#f7faf8',
+    eyebrow: 'Operations for building contractors',
+    flag: 'New',
+    headline: ['Decisions shouldn’t', 'disappear into a chat.'],
+    sub: 'Approvals, attendance and payments for building contractors — decided from the office or the phone, every step written to one unbroken record.',
+    shots: { desktop: '/shots/kikao-desktop', mobile: '/shots/kikao-mobile.webp' },
+  },
+  {
     id: 'zaamu',
     name: 'Zaamu',
     domain: 'zaamu.com',
@@ -237,6 +258,13 @@ function Journey({ captions, images, alt }) {
   )
 }
 
+const KIKAO_CAPTIONS = [
+  { title: 'One queue for every decision.', body: 'Materials, orders, floats and payments raised on site land in one To do — ranked, on the office screen or the phone.' },
+  { title: 'Decide with the facts in hand.', body: 'Order, delivery and invoice matched, the price against the last five, photos from site. Approve, approve less, ask or reject.' },
+  { title: 'Sealed into the record.', body: 'Ten seconds to undo, then it’s sealed. Finance records the payment next, and the site manager is told.' },
+]
+const KIKAO_SHOTS = ['/shots/kikao-app-1.webp', '/shots/kikao-app-2.webp', '/shots/kikao-app-3.webp']
+
 const ZAAMU_CAPTIONS = [
   { title: 'Choose a service.', body: 'Barber, massage or salon — real prices, real durations, the shop’s own menu.' },
   { title: 'Pick your person.', body: 'Real barbers with real bios — or “Any available” finds the soonest open chair.' },
@@ -383,6 +411,46 @@ const EXTRAS = { sampuli: SampuliTerminals }
 /* ------------------------------------------------------------------ *
  * Tiles — a real thing in every tile: a measurement or working UI
  * ------------------------------------------------------------------ */
+
+function KikaoTiles() {
+  return (
+    <div className="bento">
+      <article className="tile" data-reveal>
+        <div className="demo">
+          <ol className="demo__chain" aria-label="An approval chain">
+            <li className="is-done"><i aria-hidden="true" /><b>Site manager</b><span>Raised · 08:12</span></li>
+            <li className="is-done"><i aria-hidden="true" /><b>Director</b><span>Approved · 10:51</span></li>
+            <li className="is-now"><i aria-hidden="true" /><b>Finance</b><span>Records the payment</span></li>
+          </ol>
+        </div>
+        <h3 className="tile__title">One request, from site to ledger</h3>
+        <p className="tile__body">Materials, orders, floats, leave and payments — each a typed request, routed by your own rules. Bigger amounts can call for a second director.</p>
+      </article>
+      <article className="tile" data-reveal>
+        <p className="tile__big">KSh 0</p>
+        <h3 className="tile__title">Moved by Kikao, ever</h3>
+        <p className="tile__body">Finance pays the way it always has and records the reference against the approval. Kikao keeps the record — never the money.</p>
+      </article>
+      <article className="tile" data-reveal>
+        <p className="tile__big">Friday</p>
+        <h3 className="tile__title">The week, closed</h3>
+        <p className="tile__body">Attendance marked on site becomes the M-Pesa bulk wage file finance uploads — and one Friday page shows every site, house and shilling committed.</p>
+      </article>
+      <article className="tile" data-reveal>
+        <div className="demo">
+          <div className="demo__ledger">
+            <p><span>08:12</span>Raised · cement, Site C</p>
+            <p><span>10:51</span>Approved · Director</p>
+            <p><span>Wed 11:04</span>Recorded · EFT 88311</p>
+            <p className="demo__ok">✓ Chain intact — nothing edited after the fact</p>
+          </div>
+        </div>
+        <h3 className="tile__title">A record no one can quietly edit</h3>
+        <p className="tile__body">Every request, decision and payment is sealed into a hash-chained, append-only audit trail. Corrections are new entries, never rewrites.</p>
+      </article>
+    </div>
+  )
+}
 
 function ZaamuTiles() {
   return (
@@ -549,8 +617,9 @@ function MezaniTiles() {
   )
 }
 
-const TILES = { zaamu: ZaamuTiles, pesascope: PesaTiles, sampuli: SampuliTiles, mezani: MezaniTiles }
+const TILES = { kikao: KikaoTiles, zaamu: ZaamuTiles, pesascope: PesaTiles, sampuli: SampuliTiles, mezani: MezaniTiles }
 const STORIES = {
+  kikao: () => <Journey captions={KIKAO_CAPTIONS} images={KIKAO_SHOTS} alt="The real Kikao app (demo company)" />,
   zaamu: () => <Journey captions={ZAAMU_CAPTIONS} images={ZAAMU_SHOTS} alt="The real Zaamu booking flow" />,
   pesascope: () => <Journey captions={PESA_CAPTIONS} images={PESA_SHOTS} alt="The real PesaScope dashboard (sample statement)" />,
   sampuli: () => <Journey captions={SAMPULI_CAPTIONS} images={SAMPULI_SHOTS} alt="The real Sampuli generator" />,
@@ -566,6 +635,8 @@ function Chapter({ p }) {
   const Story = STORIES[p.id]
   const Extra = EXTRAS[p.id]
   const style = { '--c1': p.c1, '--c2': p.c2, '--deep': p.deep, '--glow': p.glow, '--screen-bg': p.screenBg }
+  if (p.ground) style['--chapter-bg'] = p.ground // a product's own signature ground (Kikao)
+  if (p.numInk) style['--num-ink'] = p.numInk
   return (
     <section id={p.id} className={`chapter chapter--${p.tone}`} style={style}>
       <div className="chapter__glow" aria-hidden="true" />
@@ -633,7 +704,7 @@ export default function App() {
             <span className="hero-anim grad-hero" style={{ animationDelay: '180ms' }}>made to last.</span>
           </h1>
           <p className="hero__sub hero-anim" style={{ animationDelay: '300ms' }}>
-            Four products. Live today. Engineered to endure.
+            Five products. Live today. Engineered to endure.
           </p>
           <div className="hero__chips hero-anim" style={{ animationDelay: '420ms' }}>
             {PRODUCTS.map((p) => (
@@ -684,7 +755,7 @@ export default function App() {
           </p>
           <div className="contact__actions">
             <a href={`mailto:${CONTACT_EMAIL}`} className="btn btn--light">Say hello <Arrow /></a>
-            <a href="#zaamu" className="btn btn--outline">Explore the products</a>
+            <a href={`#${PRODUCTS[0].id}`} className="btn btn--outline">Explore the products</a>
           </div>
           <p className="contact__email"><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></p>
         </div>

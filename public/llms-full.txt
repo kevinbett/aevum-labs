@@ -14,6 +14,21 @@ Home: https://aevumlabs.site  ·  Contact: support@zaamu.com
 
 ## Products
 
+### Kikao — https://kikao.site
+An operating system for building contractors running several sites — approvals,
+attendance and payments in one place. Site managers raise typed requests
+(materials, purchase orders, floats, leave, payments) that land in one "To do"
+queue for the right approver, routed by the company's own rules; larger amounts
+can require a second director. A director decides from the office web app or the
+phone — approve, approve less, ask or reject — with the order, delivery and invoice
+matched and site photos attached. Foremen mark attendance on site (it works offline
+and sends when there's signal), and each week's attendance becomes the M-Pesa bulk
+wage file that finance uploads themselves. Kikao never moves money: finance records
+every payment against its approval. Every request, decision and payment is sealed
+into a hash-chained, append-only audit trail; corrections are new entries, never
+rewrites. A Friday page summarises every site, house and shilling committed.
+Companies apply and are checked before they go live.
+
 ### Zaamu — https://zaamu.com
 A booking platform for barbershops, salons and spas. Any shop can self-onboard,
 publish a booking page, and manage staff, services and appointments — walk-ins and
