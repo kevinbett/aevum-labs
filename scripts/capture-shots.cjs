@@ -2,6 +2,8 @@
 // Needs Playwright + Chromium on the PATH of some node_modules:
 //   NODE_PATH=/path/to/node_modules node scripts/capture-shots.cjs
 // Then run scripts/make-assets.cjs to produce the WebP files the site uses.
+// Kikao is NOT captured here: its laptop/phone show the real app (behind sign-in),
+// captured from demo mode by scripts/capture-kikao-demo.cjs, which writes its own WebP.
 const { chromium, devices } = require('playwright');
 const path = require('path');
 const OUT = path.join(__dirname, '..', 'public', 'shots');

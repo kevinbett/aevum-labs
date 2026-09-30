@@ -363,7 +363,7 @@ html.js [data-reveal].is-visible {
   padding: 110px 0 100px;
 }
 .chapter--light { background: var(--paper); color: var(--text-d); }
-.chapter--dark { background: var(--ink); color: var(--text-l); }
+.chapter--dark { background: var(--chapter-bg, var(--ink)); color: var(--text-l); }
 .chapter__glow {
   position: absolute;
   left: 50%;
@@ -586,7 +586,7 @@ html.js [data-reveal].is-visible {
   border-radius: 50%;
   font-size: 13px;
   font-weight: 700;
-  color: #fff;
+  color: var(--num-ink, #fff);
   background: linear-gradient(135deg, var(--c1), var(--c2));
   margin-bottom: 10px;
   font-variant-numeric: tabular-nums;
@@ -748,6 +748,74 @@ html.js [data-reveal].is-visible {
 .demo__prompt { color: var(--deep); margin-right: 8px; }
 .demo__npm--wrap { white-space: pre-wrap; word-break: break-all; line-height: 1.6; }
 .chapter--light .demo__npm { box-shadow: 0 10px 26px -16px rgba(0, 0, 0, 0.5); }
+/* Kikao — an approval chain, and the sealed record it leaves */
+.demo__chain {
+  list-style: none;
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: grid;
+  gap: 12px;
+}
+.demo__chain li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 18px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+.demo__chain li + li::before {
+  /* the rail joining one step to the next */
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: -12px;
+  height: 12px;
+  width: 2px;
+  background: rgba(167, 239, 225, 0.35);
+}
+.demo__chain i {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+.demo__chain .is-done i { background: var(--c1); }
+.demo__chain .is-done i::after {
+  content: '';
+  width: 7px;
+  height: 4px;
+  border: 2px solid var(--num-ink, #0c3936);
+  border-top: 0;
+  border-right: 0;
+  transform: translateY(-1px) rotate(-45deg);
+}
+.demo__chain .is-now i { border: 2px solid var(--c1); box-shadow: 0 0 0 4px rgba(167, 239, 225, 0.16); }
+.demo__chain b { font-weight: 600; }
+.demo__chain span { font-size: 11.5px; color: var(--text-l2); font-variant-numeric: tabular-nums; }
+.demo__chain .is-now span { color: var(--c1); font-weight: 600; }
+.demo__ledger {
+  padding: 13px 14px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 12.5px;
+}
+.demo__ledger p { display: flex; gap: 12px; margin-bottom: 7px; }
+.demo__ledger span {
+  flex: none;
+  width: 74px;
+  white-space: nowrap;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--text-l2);
+  font-variant-numeric: tabular-nums;
+}
+.demo__ledger .demo__ok { display: block; margin: 10px 0 0; padding-top: 9px; border-top: 1px dashed rgba(255, 255, 255, 0.14); }
 .demo__card {
   padding: 14px;
   border-radius: 14px;
