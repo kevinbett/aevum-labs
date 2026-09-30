@@ -131,6 +131,25 @@ function useReveal() {
   }, [])
 }
 
+/* Safari only starts a lazy image once it is almost on screen, so on a
+   phone connection the product screens arrived after the reader did — bare
+   white frames. Promote each stage's and journey's images to eager while
+   they are still ~two screens away, so they are there on arrival. */
+function useEarlyImages() {
+  useEffect(() => {
+    const groups = Array.from(document.querySelectorAll('.stage, .journey'))
+    const promote = (el) => el.querySelectorAll('img[loading="lazy"]').forEach((img) => { img.loading = 'eager' })
+    if (!('IntersectionObserver' in window)) { groups.forEach(promote); return }
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) { promote(e.target); io.unobserve(e.target) } }),
+      { rootMargin: '1600px 0px' },
+    )
+    groups.forEach((g) => io.observe(g))
+    return () => io.disconnect()
+  }, [])
+}
+
+
 /* ------------------------------------------------------------------ *
  * Shared pieces
  * ------------------------------------------------------------------ */
@@ -685,6 +704,7 @@ function Chapter({ p }) {
 
 export default function App() {
   useReveal()
+  useEarlyImages()
   const year = new Date().getFullYear()
 
   return (
