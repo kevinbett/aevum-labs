@@ -396,6 +396,25 @@ html.js [data-reveal].is-visible {
 .chapter--light .chapter__pill { background: var(--white); color: var(--text-d); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06); }
 .chapter--dark .chapter__pill { background: rgba(255, 255, 255, 0.08); color: var(--text-l); }
 .chapter__cat { font-weight: 500; opacity: 0.65; }
+.chapter__cat-below { display: none; }
+
+/* A product's own ground (Kikao): the colour rises out of the hero's black
+   rather than meeting it at a hard edge — the seam is feathered from the
+   hero's exact ink, and the glow blooms behind the headline, not at the edge. */
+.chapter--ground::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 300px;
+  background: linear-gradient(180deg,
+    var(--ink) 0%,
+    rgba(11, 11, 16, 0.78) 24%,
+    rgba(11, 11, 16, 0.46) 50%,
+    rgba(11, 11, 16, 0.16) 78%,
+    rgba(11, 11, 16, 0) 100%);
+  pointer-events: none;
+}
+.chapter--ground .chapter__glow { top: 220px; }
 .chapter__dot {
   width: 9px; height: 9px;
   border-radius: 50%;
@@ -937,6 +956,12 @@ html.js [data-reveal].is-visible {
   .chapter { padding: 64px 0 72px; }
   .chapter__head { margin-bottom: 40px; }
   .chapter__glow { width: 160vw; height: 120vw; }
+  .chapter--ground::before { height: 220px; }
+  .chapter--ground .chapter__glow { top: 140px; }
+  /* the category leaves the pill on phones: one tidy pill, a caption beneath */
+  .chapter__pill .chapter__cat { display: none; }
+  .chapter__pill { margin-bottom: 12px; }
+  .chapter__cat-below { display: block; font-size: 14.5px; font-weight: 500; opacity: 0.65; margin: 0 auto 20px; }
   .stage { margin-bottom: 48px; padding-bottom: 0; }
   .stage__floor { display: none; }
   .laptop { display: none; }

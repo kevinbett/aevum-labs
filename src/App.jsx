@@ -15,7 +15,8 @@ const PRODUCTS = [
     domain: 'kikao.site',
     url: 'https://kikao.site',
     tone: 'dark',
-    ground: 'radial-gradient(ellipse 130% 60% at 50% 0%, #11504a 0%, #0c3936 48%, #082725 100%)',
+    // darkest at the top so it rises out of the hero's black; brightest behind the headline
+    ground: 'radial-gradient(ellipse 120% 50% at 50% 34%, #11504a 0%, #0c3936 46%, #082725 100%)',
     c1: '#A7EFE1',
     c2: '#2DD4BF',
     deep: '#134E4A',
@@ -638,7 +639,7 @@ function Chapter({ p }) {
   if (p.ground) style['--chapter-bg'] = p.ground // a product's own signature ground (Kikao)
   if (p.numInk) style['--num-ink'] = p.numInk
   return (
-    <section id={p.id} className={`chapter chapter--${p.tone}`} style={style}>
+    <section id={p.id} className={`chapter chapter--${p.tone}${p.ground ? ' chapter--ground' : ''}`} style={style}>
       <div className="chapter__glow" aria-hidden="true" />
       <div className="chapter__inner">
         <header className="chapter__head" data-reveal>
@@ -648,6 +649,8 @@ function Chapter({ p }) {
             {p.flag && <span className="chapter__flag">{p.flag}</span>}
             <span className="chapter__cat">{p.eyebrow}</span>
           </p>
+          {/* phones: the category sits under the pill instead of wrapping it into a tall box */}
+          <p className="chapter__cat-below">{p.eyebrow}</p>
           <h2 className="chapter__title">
             <span className="chapter__accent">{p.headline[0]}</span>
             <br />
