@@ -29,6 +29,14 @@ into a hash-chained, append-only audit trail; corrections are new entries, never
 rewrites. A Friday page summarises every site, house and shilling committed.
 Companies apply and are checked before they go live.
 
+### Fundify — https://dhamana-olive.vercel.app (early access)
+A trust layer for hiring in Kenya's informal economy, starting with fundis
+(plumbers, electricians, masons) — Kikao's sister product, for the jobs too small
+for a contractor. Fundis are ID- and phone-checked; ratings can only be written by
+a party to a job both sides confirmed, so reputation can't be bought or gamed; and
+a job closes on confirm-on-completion. In this first phase no money is held —
+payment stays peer-to-peer while the reputation layer is built.
+
 ### Zaamu — https://zaamu.com
 A booking platform for barbershops, salons and spas. Any shop can self-onboard,
 publish a booking page, and manage staff, services and appointments — walk-ins and
