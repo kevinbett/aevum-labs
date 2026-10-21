@@ -972,24 +972,47 @@ html.js [data-reveal].is-visible {
     max-width: 300px;
     margin: 0 auto;
   }
+  /* Phones: the journey is a vertical list of steps — a smaller real screen
+     beside its caption, linked by a thin rail. The page simply scrolls: no
+     sideways carousel, no hidden gesture, no scroller inside the page. */
   .journey {
-    display: flex;
-    /* sideways only: overflow-x:auto alone makes overflow-y compute to auto too,
-       and the reveal's translateY then gave the strip a vertical scroll range —
-       a vertical drag on a phone scrolled the strip (phone sliding up inside a
-       clipped window) instead of the page. Lock the axis so the page scrolls. */
-    overflow-x: auto;
-    overflow-y: hidden;
-    overscroll-behavior-x: contain;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    gap: 18px;
-    padding: 0 24px 30px; /* room for the steps' 26px rise-in, so nothing clips while revealing */
-    margin-bottom: 42px;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    max-width: 520px;
+    padding: 0 22px;
+    margin: 0 auto 64px;
   }
-  .journey::-webkit-scrollbar { display: none; }
-  .journey__step { flex: 0 0 74%; max-width: 300px; scroll-snap-align: center; }
+  .journey__step {
+    --phone-col: 42%;
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--phone-col) 1fr;
+    gap: 18px;
+    align-items: start; /* the phone keeps its true shape — stretching it cropped the screen */
+  }
+  /* full column width — the stage phone's 62% rule above must not shrink these */
+  .journey__step .phone--journey { width: 100%; max-width: none; margin: 0; border-width: 6px; }
+  .journey__caption {
+    position: relative;
+    text-align: left;
+    margin-top: 0;
+    padding: 34px 0 0 40px; /* left lane holds the number and the rail, clear of the text */
+  }
+  .journey__num { position: absolute; left: 0; top: 34px; margin: 0; }
+  .journey__caption h3 { font-size: 18.5px; padding-top: 2px; }
+  .journey__body { font-size: 14px; max-width: none; margin: 0; }
+  /* the rail: from under one step's number down to the next step's number */
+  .journey__step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: calc(var(--phone-col) + 18px + 12px);
+    top: calc(34px + 26px + 10px);
+    bottom: calc(-30px - 34px + 10px);
+    width: 2px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, var(--c1), var(--c2));
+    opacity: 0.35;
+  }
   .bento { grid-template-columns: 1fr; }
   .lab, .contact { padding: 88px 20px; }
   .footer__note { margin-left: 0; width: 100%; }
