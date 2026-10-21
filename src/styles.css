@@ -843,6 +843,104 @@ html.js [data-reveal].is-visible {
 }
 .demo__pan { font-family: var(--mono); font-size: 15px; font-weight: 600; color: var(--text-d); letter-spacing: 0.04em; }
 
+/* ---------- companion: a sister product at the foot of a chapter ----------
+   Fundify under Kikao. Dark glass to belong to the chapter, Fundify's own gold
+   to read as a different product, and its real phone rising from the card's
+   bottom edge (clipped there) to stay compact. */
+.companion {
+  --gold: #E7B65A;
+  position: relative;
+  max-width: 980px;
+  margin: 64px auto 0;
+  border-radius: 28px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  background:
+    radial-gradient(ellipse 55% 75% at 82% 100%, rgba(201, 144, 43, 0.20), transparent 70%),
+    rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+.companion__text { padding: 44px 8px 44px 44px; align-self: center; }
+.companion__eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-l2);
+  margin-bottom: 18px;
+}
+.companion__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  margin-bottom: 14px;
+}
+.companion__mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-size: 17px;
+  background: rgba(231, 182, 90, 0.16);
+  border: 1px solid rgba(231, 182, 90, 0.28);
+}
+.companion__flag {
+  font-family: var(--body);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #241703;
+  background: var(--gold);
+  border-radius: 999px;
+  padding: 3px 9px;
+}
+.companion__title {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(26px, 3vw, 34px);
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+.companion__body { color: var(--text-l2); font-size: 15.5px; line-height: 1.55; max-width: 44ch; margin-bottom: 18px; }
+.companion__points { list-style: none; margin: 0 0 24px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.companion__points li {
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 6px 12px 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+.companion__points li::before { content: '✓'; color: var(--gold); margin-right: 6px; }
+.companion__link { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: 16.5px; color: var(--gold); }
+.companion__link .arrow { transition: transform 0.25s var(--ease); }
+.companion__link:hover .arrow { transform: translateX(4px); }
+.companion__device {
+  align-self: end;
+  height: 380px;
+  overflow: hidden; /* the phone rises out of the card's bottom edge */
+  padding: 40px 34px 0;
+}
+.companion .phone--companion {
+  position: relative;
+  right: auto;
+  bottom: auto;
+  width: 100%;
+  max-width: 250px;
+  min-width: 0;
+  margin: 0 auto;
+  --screen-bg: #f5f7f6;
+  --glow: rgba(231, 182, 90, 0.22);
+}
+
 /* ---------- the lab ---------- */
 .lab {
   background: var(--ink-2);
@@ -962,6 +1060,10 @@ html.js [data-reveal].is-visible {
   .chapter__pill .chapter__cat { display: none; }
   .chapter__pill { margin-bottom: 12px; }
   .chapter__cat-below { display: block; font-size: 14.5px; font-weight: 500; opacity: 0.65; margin: 0 auto 20px; }
+  .companion { grid-template-columns: 1fr; margin-top: 48px; border-radius: 24px; }
+  .companion__text { padding: 30px 24px 4px; }
+  .companion__device { height: 300px; padding: 26px 0 0; }
+  .companion .phone--companion { width: 62%; max-width: 230px; }
   .stage { margin-bottom: 48px; padding-bottom: 0; }
   .stage__floor { display: none; }
   .laptop { display: none; }

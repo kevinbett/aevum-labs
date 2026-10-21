@@ -137,7 +137,7 @@ function useReveal() {
    they are still ~two screens away, so they are there on arrival. */
 function useEarlyImages() {
   useEffect(() => {
-    const groups = Array.from(document.querySelectorAll('.stage, .journey'))
+    const groups = Array.from(document.querySelectorAll('.stage, .journey, .companion'))
     const promote = (el) => el.querySelectorAll('img[loading="lazy"]').forEach((img) => { img.loading = 'eager' })
     if (!('IntersectionObserver' in window)) { groups.forEach(promote); return }
     const io = new IntersectionObserver(
@@ -428,6 +428,48 @@ function SampuliTerminals() {
 
 const EXTRAS = { sampuli: SampuliTerminals }
 
+/* A sister product shown at the foot of a chapter — compact, in its own
+   colours, with one real capture (its live landing, not a demo). Fundify sits
+   under Kikao: same trade, the other side of it — jobs too small for a contractor. */
+const FUNDIFY = {
+  name: 'Fundify',
+  url: 'https://dhamana-olive.vercel.app',
+  shot: '/shots/fundify-mobile.webp',
+}
+
+function FundifyCompanion() {
+  return (
+    <aside className="companion" data-reveal aria-labelledby="fundify-title">
+      <div className="companion__text">
+        <p className="companion__eyebrow">Also from the lab · for the jobs too small for a contractor</p>
+        <p className="companion__brand">
+          <span className="companion__mark" aria-hidden="true">🛡️</span>
+          {FUNDIFY.name}
+          <span className="companion__flag">Early access</span>
+        </p>
+        <h3 className="companion__title" id="fundify-title">Hire a fundi you can trust.</h3>
+        <p className="companion__body">
+          Plumbers, electricians and masons — ID-checked, rated only on jobs both sides confirmed, and
+          closed only when the work is done. The trust layer for hiring in Kenya.
+        </p>
+        <ul className="companion__points">
+          <li>ID- and phone-checked</li>
+          <li>Reviews only from confirmed jobs</li>
+          <li>Confirm on completion</li>
+        </ul>
+        <a href={FUNDIFY.url} target="_blank" rel="noopener noreferrer" className="companion__link">
+          Visit Fundify <Arrow />
+        </a>
+      </div>
+      <div className="companion__device">
+        <Phone className="phone--companion" src={FUNDIFY.shot} alt="Fundify on a phone" />
+      </div>
+    </aside>
+  )
+}
+
+const COMPANIONS = { kikao: FundifyCompanion }
+
 /* ------------------------------------------------------------------ *
  * Tiles — a real thing in every tile: a measurement or working UI
  * ------------------------------------------------------------------ */
@@ -654,6 +696,7 @@ function Chapter({ p }) {
   const Tiles = TILES[p.id]
   const Story = STORIES[p.id]
   const Extra = EXTRAS[p.id]
+  const Companion = COMPANIONS[p.id]
   const style = { '--c1': p.c1, '--c2': p.c2, '--deep': p.deep, '--glow': p.glow, '--screen-bg': p.screenBg }
   if (p.ground) style['--chapter-bg'] = p.ground // a product's own signature ground (Kikao)
   if (p.numInk) style['--num-ink'] = p.numInk
@@ -693,6 +736,7 @@ function Chapter({ p }) {
       <div className="chapter__inner">
         {Extra && <Extra />}
         <Tiles />
+        {Companion && <Companion />}
       </div>
     </section>
   )
